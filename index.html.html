@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Engine6.0</title>
+  <style>
+
+#loadingScreen {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #000;
+  color: white;
+  font-size: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  user-select: none;
+}
+
+.loader {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+    html, body {
+      margin: 0; padding: 0; height: 100%; overflow: hidden;
+      background: #000; font-family: Arial, sans-serif;
+    }
+    canvas {
+      position: absolute; top: 0; left: 0; display: block; z-index: 0;
+    }
+    nav {
+      position: fixed; top: -60px; width: 100%; height: 60px;
+      background: rgba(0,0,0,0.8); display: flex;
+      justify-content: center; align-items: center;
+      transition: top 0.3s; z-index: 10;
+    }
+    body:hover nav {
+      top: 0;
+    }
+    nav a {
+      color: white; margin: 0 20px; text-decoration: none;
+      font-size: 1.2em; cursor: pointer;
+    }
+    nav a.hidden {
+      display: none;
+    }
+    .center-text {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 4em; color: rgba(255, 255, 255, 0.8);
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+      z-index: 1;
+      pointer-events: none;
+    }
+    .page {
+      display: none;
+      position: absolute;
+      top: 60px; left: 0;
+      width: 100%; height: calc(100% - 60px);
+      overflow-y: auto;
+      padding: 40px;
+      box-sizing: border-box;
+      color: white;
+      z-index: 1;
+      /* No background here to let canvas show */
+    }
+    .page.active {
+      display: block;
+    }
+    /* Only non-home pages have background */
+    #productsPage, #signUpPage, #signInPage, #adminPanel {
+      background: #111;
+    }
+    /* Products */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .product-panel {
+      background: #222;
+      border-radius: 12px;
+      padding: 20px;
+      color: white;
+      box-shadow: 0 0 10px rgba(255,255,255,0.1);
+      transition: transform 0.2s;
+    }
+    .product-panel:hover {
+      transform: scale(1.05);
+    }
+    /* Show Keys Button */
+    .showKeysBtn {
+      margin-top: 10px;
+      padding: 8px 12px;
+      cursor: pointer;
+      border: none;
+      border-radius: 6px;
+      background: #2bff00;
+      color: white;
+      font-size: 1em;
+      transition: background 0.2s;
+    }
+    .showKeysBtn:hover {
+      background: #0056b3;
+    }
+    /* Forms */
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+      background: #222;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(255,255,255,0.1);
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    input[type="text"], input[type="email"], input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1em;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 1em;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    /* Admin Panel */
+    #adminPanel ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    #adminPanel li {
+      background: #222;
+      margin-bottom: 10px;
+      padding: 12px;
+      border-radius: 8px;
+      box-shadow: 0 0 6px rgba(255,255,255,0.1);
+    }
+    /* Popup Overlay */
+    #keyPopup {
+      display: none; 
+      position: fixed; 
+      top: 0; left: 0; 
+      width: 100%; height: 100%; 
+      background: rgba(0,0,0,0.8); 
+      z-index: 20; 
+      justify-content: center; 
+      align-items: center;
+    }
+    #keyPopup > div {
+      background: #222; 
+      padding: 30px; 
+      border-radius: 12px; 
+      width: 300px; 
+      color: white; 
+      position: relative;
+      box-sizing: border-box;
+    }
+    #keyPopup h2 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      font-weight: normal;
+      font-size: 1.8em;
+      text-align: center;
+    }
+    #keyList {
+      list-style: none; 
+      padding-left: 0; 
+      margin: 0;
+      max-height: 150px;
+      overflow-y: auto;
+      border-top: 1px solid #444;
+      border-bottom: 1px solid #444;
+    }
+    #keyList li {
+      padding: 8px 0;
+      border-bottom: 1px solid #444;
+      font-family: monospace;
+      font-size: 1.1em;
+      user-select: all;
+    }
+    #keyPopup a {
+      display: block; 
+      margin-top: 20px; 
+      background: #00ff37; 
+      padding: 12px; 
+      text-align: center; 
+      border-radius: 6px; 
+      text-decoration: none; 
+      color: white; 
+      font-weight: bold;
+      font-size: 1.1em;
+      transition: background 0.2s;
+    }
+    #keyPopup a:hover {
+      background: #0056b3;
+    }
+    #closePopup {
+      position: absolute; 
+      top: 10px; right: 10px; 
+      background: none; 
+      border: none; 
+      color: white; 
+      font-size: 28px; 
+      cursor: pointer;
+      line-height: 1;
+      padding: 0;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="bgCanvas"></canvas>
+
+<body>
+
+  <!-- Loading Screen -->
+  <div id="loadingScreen">
+    <div class="loader">Loading Engine6.0...</div>
+  </div>
+
+  <!-- Your existing content below -->
+  <canvas id="bgCanvas"></canvas>
+  <!-- ... rest of your page ... -->
+
+  <script>
+    // Your existing scripts...
+
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const loadingScreen = document.getElementById('loadingScreen');
+        loadingScreen.style.display = 'none';
+      }, 3000);
+    });
+  </script>
+</body>
+>
+
+  <nav>
+    <a id="navHome" onclick="showPage('home')">Home</a>
+    <a id="navProducts" onclick="showPage('productsPage')">Products</a>
+    <a id="navSignUp" onclick="showPage('signUpPage')">Sign Up</a>
+    <a id="navSignIn" onclick="showPage('signInPage')">Sign In</a>
+    <a id="navAdmin" class="hidden" onclick="showPage('adminPanel')">Admin Panel</a>
+  </nav>
+
+  <div class="center-text">Engine6.0</div>
+
+  <div id="home" class="page active">
+    <!-- empty - canvas shows through -->
+  </div>
+
+  <div id="productsPage" class="page">
+    <h1 style="text-align:center;">Our Products</h1>
+    <div class="product-grid">
+      <div class="product-panel" data-product="Engine6.0 Executor">
+        Engine6.0 Executor<br>has a 100% Unc and 100% Sunc and has a built in spoofer that spoofs evreything
+        <button class="showKeysBtn">Show options</button>
+      </div>
+      <div class="product-panel" data-product="Product 2">
+        Warzine fecurity<br>B06/warzone exsternal cheat wokrs on all version of windows has aimbot esp radar no recoil and much more
+        <button class="showKeysBtn">Show options</button>
+      </div>
+      <div class="product-panel" data-product="Product 3">
+        Engine6.0 Spoofer<br>Spoofe evreything even battle eye and vangaurd
+        <button class="showKeysBtn">Show options</button>
+      </div>
+      <div class="product-panel" data-product="Product 4">
+        Awp Executor<br>>has a 100% Unc and 100% Sunc and much more
+        <button class="showKeysBtn">Show options</button>
+      </div>
+      <div class="product-panel" data-product="Product 5">
+        Untrned exesternal<br>has aimbot sinet aim esp fov chagner zombie esp loot esp vechial esp and much more!
+        <button class="showKeysBtn">Show options</button>
+      </div>
+      <div class="product-panel" data-product="Product 6">
+        Engine6.0 Cs2 exesternal<br>Aim bot esp aim bot and much moreee
+        <button class="showKeysBtn">Show options</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="signUpPage" class="page">
+    <h1 style="text-align:center;">Sign Up</h1>
+    <form id="signUpForm">
+      <label for="signupName">Name</label>
+      <input type="text" id="signupName" required />
+      <label for="signupEmail">Email</label>
+      <input type="email" id="signupEmail" required />
+      <label for="signupPassword">Password</label>
+      <input type="password" id="signupPassword" required />
+      <button type="submit">Register</button>
+    </form>
+  </div>
+
+  <div id="signInPage" class="page">
+    <h1 style="text-align:center;">Sign In</h1>
+    <form id="signInForm">
+      <label for="signinEmail">Email</label>
+      <input type="email" id="signinEmail" required />
+      <label for="signinPassword">Password</label>
+      <input type="password" id="signinPassword" required />
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+  <div id="adminPanel" class="page">
+    <h1 style="text-align:center;">Admin Panel</h1>
+    <h2>Registered Users:</h2>
+    <ul id="userList"></ul>
+  </div>
+
+  <!-- Popup Overlay -->
+  <div id="keyPopup">
+    <div>
+      <button id="closePopup" aria-label="Close popup">×</button>
+      <h2>Product Keys</h2>
+      <ul id="keyList"></ul>
+      <a href="https://cash.app/$johnyukhh" target="_blank" rel="noopener noreferrer">Buy</a>
+    </div>
+  </div>
+
+  <script>
+    // Background dots canvas
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    const dots = Array.from({ length: 100 }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: (Math.random() - 0.5) * 0.5
+    }));
+
+    function draw() {
+      ctx.clearRect(0, 0, width, height);
+
+      for (let i = 0; i < dots.length; i++) {
+        const d = dots[i];
+        d.x += d.vx;
+        d.y += d.vy;
+
+        if (d.x < 0 || d.x > width) d.vx *= -1;
+        if (d.y < 0 || d.y > height) d.vy *= -1;
+
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, 2, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+
+        for (let j = i + 1; j < dots.length; j++) {
+          const d2 = dots[j];
+          const dx = d.x - d2.x;
+          const dy = d.y - d2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 100) {
+            ctx.beginPath();
+            ctx.moveTo(d.x, d.y);
+            ctx.lineTo(d2.x, d2.y);
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(draw);
+    }
+    draw();
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+
+    // Page navigation logic
+    function showPage(pageId) {
+      // Hide all pages
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+
+      // Show requested page
+      document.getElementById(pageId).classList.add('active');
+
+      // Show/hide center text on home only
+      const centerText = document.querySelector('.center-text');
+      if (pageId === 'home') {
+        centerText.style.display = 'block';
+      } else {
+        centerText.style.display = 'none';
+      }
+    }
+
+    // User management (simple in-memory storage)
+    let users = [];
+    let currentUser = null;
+
+    // Helper: update nav for signed-in user
+    function updateNav() {
+      const navSignIn = document.getElementById('navSignIn');
+      const navSignUp = document.getElementById('navSignUp');
+      const navAdmin = document.getElementById('navAdmin');
+
+      if (currentUser) {
+        navSignIn.textContent = 'Sign Out (' + currentUser.name + ')';
+        navSignUp.style.display = 'none';
+
+        if (currentUser.email === 'duckey5656@gmail.com') {
+          navAdmin.classList.remove('hidden');
+        } else {
+          navAdmin.classList.add('hidden');
+        }
+      } else {
+        navSignIn.textContent = 'Sign In';
+        navSignUp.style.display = 'inline';
+        navAdmin.classList.add('hidden');
+      }
+    }
+
+    // Sign Up form submit
+    document.getElementById('signUpForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const name = document.getElementById('signupName').value.trim();
+      const email = document.getElementById('signupEmail').value.trim().toLowerCase();
+      const password = document.getElementById('signupPassword').value;
+
+      if (users.some(u => u.email === email)) {
+        alert('Email already registered');
+        return;
+      }
+
+      users.push({ name, email, password });
+      alert('Registration successful! Please sign in.');
+      document.getElementById('signUpForm').reset();
+      showPage('signInPage');
+    });
+
+    // Sign In form submit
+    document.getElementById('signInForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const email = document.getElementById('signinEmail').value.trim().toLowerCase();
+      const password = document.getElementById('signinPassword').value;
+
+      const user = users.find(u => u.email === email && u.password === password);
+      if (!user) {
+        alert('Invalid email or password');
+        return;
+      }
+
+      currentUser = user;
+      alert('Welcome, ' + user.name + '!');
+      updateNav();
+      showPage('home');
+      document.getElementById('signInForm').reset();
+      populateUserList();
+    });
+
+    // Sign Out logic
+    document.getElementById('navSignIn').addEventListener('click', () => {
+      if (currentUser) {
+        if (confirm('Sign out?')) {
+          currentUser = null;
+          updateNav();
+          showPage('home');
+        }
+      } else {
+        showPage('signInPage');
+      }
+    });
+
+    // Admin panel user list
+    function populateUserList() {
+      if (!currentUser || currentUser.email !== 'duckey5656@gmail.com') {
+        document.getElementById('userList').innerHTML = '<li>Access denied.</li>';
+        return;
+      }
+
+      const ul = document.getElementById('userList');
+      ul.innerHTML = '';
+      users.forEach(u => {
+        const li = document.createElement('li');
+        li.textContent = `Name: ${u.name}, Email: ${u.email}`;
+        ul.appendChild(li);
+      });
+    }
+
+    // Keys popup logic
+    const keyPopup = document.getElementById('keyPopup');
+    const keyList = document.getElementById('keyList');
+    const closePopup = document.getElementById('closePopup');
+
+    const productKeys = {
+      "Product 1": ["1 day key 2.50", "1 weak key 5.00", "3month key 15.00"],
+      "Product 2": ["KEY-JKL-234", "KEY-MNO-567", "KEY-PQR-890"],
+      "Product 3": ["KEY-STU-345", "KEY-VWX-678", "KEY-YZA-901"],
+      "Product 4": ["KEY-BCD-456", "KEY-EFG-789", "KEY-HIJ-012"],
+      "Product 5": ["KEY-KLM-567", "KEY-NOP-890", "KEY-QRS-123"],
+      "Product 6": ["KEY-TUV-678", "KEY-WXY-901", "KEY-ZAB-234"],
+    };
+
+    document.querySelectorAll('.showKeysBtn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const productName = btn.closest('.product-panel').dataset.product;
+        keyList.innerHTML = '';
+
+        const keys = productKeys[productName] || [];
+        keys.forEach(key => {
+          const li = document.createElement('li');
+          li.textContent = key;
+          keyList.appendChild(li);
+        });
+
+        keyPopup.style.display = 'flex';
+      });
+    });
+
+    closePopup.addEventListener('click', () => {
+      keyPopup.style.display = 'none';
+    });
+
+    // Clicking outside popup closes it
+    keyPopup.addEventListener('click', e => {
+      if (e.target === keyPopup) {
+        keyPopup.style.display = 'none';
+      }
+    });
+
+    // Initial nav update
+    updateNav();
+
+    
+  </script>
+</body>
+</html>

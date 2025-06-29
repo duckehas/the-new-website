@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Engine6.0 Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      transform-style: preserve-3d;
+      perspective: 1000px;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #0e0e15;
+      color: white;
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background-color: #0a0a12;
+      position: fixed;
+      width: 100%;
+      z-index: 1000;
+    }
+    nav a {
+      color: #b4aaff;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: 500;
+      transition: color 0.3s;
+      user-select: none;
+    }
+    nav a:hover {
+      color: #ffffff;
+    }
+    nav .logo {
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: #a78bfa;
+      user-select: none;
+    }
+    header {
+      background: url('https://images.unsplash.com/photo-1601050690185-0f3f5f5b9982') no-repeat center center/cover;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 0 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, #7b61ff88, transparent 70%);
+      animation: pulseBG 4s ease-in-out infinite;
+      z-index: 0;
+      pointer-events: none;
+      filter: blur(40px);
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 10, 25, 0.85);
+      z-index: 1;
+    }
+    @keyframes pulseBG {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 0.8;
+      }
+      50% {
+        transform: scale(1.2);
+        opacity: 0.4;
+      }
+    }
+    header h1,
+    header p {
+      position: relative;
+      z-index: 2;
+    }
+    header h1 {
+      font-size: 3em;
+      color: #a280ff;
+      font-weight: 800;
+      text-shadow: 0 0 15px #7b61ff;
+    }
+    header p {
+      max-width: 600px;
+      margin: 20px auto;
+      font-size: 1.1em;
+      color: #cfcfff;
+      text-shadow: 0 0 10px #7b61ff88;
+    }
+    /* 3D tilt container style */
+    .tilt {
+      transition: transform 0.2s ease;
+      will-change: transform;
+      cursor: pointer;
+      user-select: none;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(124, 104, 255, 0.15);
+      background: #181824;
+      padding: 20px;
+      color: #d1d1e9;
+      display: block; /* for cards links */
+      text-decoration: none;
+    }
+    .tilt:hover {
+      box-shadow: 0 0 30px rgba(124, 104, 255, 0.6);
+    }
+    .tilt h3 {
+      color: #a78bfa;
+      margin-bottom: 10px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 12px 30px;
+      background: #7b61ff;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      margin-top: 10px;
+      box-shadow: 0 0 15px #7b61ff;
+      transition: box-shadow 0.3s ease;
+      user-select: none;
+    }
+    .btn:hover {
+      box-shadow: 0 0 30px #7b61ffcc;
+    }
+    .section {
+      padding: 80px 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .section h2 {
+      text-align: center;
+      font-size: 2rem;
+      color: #c4b5fd;
+      margin-bottom: 40px;
+    }
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+    footer {
+      text-align: center;
+      padding: 30px;
+      background: #0a0a12;
+      color: #aaaaff;
+      font-size: 0.9em;
+      margin-top: 60px;
+      user-select: none;
+    }
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2rem;
+      }
+      .btn {
+        font-size: 0.9em;
+        padding: 10px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="logo">Engine6.0 Services</div>
+    <div>
+      <a href="Untitled-11.html">Home</a>
+      <a href="dowloads.html">Downloads</a>
+      <a href="#products">Products</a>
+      <a href="Support.html">Support</a>
+      <a href="Faq.html">FAQ</a>
+      <a href="Contact.html">Contact</a>
+    <a href="Staus.html">Status</a>
+    <a href="Uploads.html">Profile</a>
+    <a href="profile.html">Uploads</a>
+    <a href="people.html">Updates</a>
+    <a href="tut.html">Tutorial</a>
+    <a href="Anc.html">daily Announcements</a>
+    <a href="Settings.html">Settings</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header id="home">
+    <h1>Industry-Leading Cheats</h1>
+    <p>Experience next-level gaming enhancements, fully optimized and trusted by thousands.</p>
+    <a href="#products" class="btn tilt">Please open the Contact Tab From the Home page Or a glitch Will happen Also if you dont see every tab when you click on one just go back to the home page  Thank you so much!!</a>
+  </header>
+
+  <!-- Products Section -->
+  <section class="section" id="products">
+    <h2>Our Products</h2>
+    <div class="products">
+      <!-- 15 product cards -->
+      <a href="buy page.html" class="tilt" tabindex="0">
+        <h3>Engine6.0 Roblox Executor</h3>
+        <p>Optimize for game performance with precision controls and Has 100% Unc and 100% Sunc(Click to See more Details)</p>
+      </a>
+      <a href="buy page 2.html" class="tilt" tabindex="0">
+        <h3>Engine6.0 Perm Spoofer</h3>
+        <p>Can spoof any anti cheat and also works for any game even roblox for hwid resetes ip reset or even perm spoof(Click to See more Details)</p>
+      </a>
+      <a href="buy page 5.html" class="tilt" tabindex="0">
+        <h3>Engine6.0 Cs2 Exesternal</h3>
+        <p>Has Esp aim bot water mark Aimbot Smooth control and Spread</p>
+      </a>
+      <a href="buy page 4.html" class="tilt" tabindex="0">
+        <h3>Engine6.0 Cod/Warzone Internal</h3>
+        <p>Has Unlock all Sient aim normal aimbot Built in Spoofer And undected(Click to See more Details)</p>
+      </a>
+      <a href="buy page 6.html" class="tilt" tabindex="0">
+        <h3>Engine6.0 Cod/Warzone Exesternal</h3>
+        <p>Has one of the best aimbot you can have Memorey Aimbot And esp Uav and Advanced Uav(Click to See more Details)</p>
+      </a>
+      <a href="buy page 7.html" class="tilt" tabindex="0">
+        <h3>Engine6.0 Fivem Exesternal</h3>
+        <p>Has esp aimbot Sient aim Trigger bot teloprts godmode Noclip(Click to See more Details)</p>
+      </a>
+      <a href="buy page 8.html" class="tilt" tabindex="0">
+        <h3>Engine6.0 Untrned Internal</h3>
+        <p>Has a built in spoofer for the best protection Possible(Click to See more Details)</p>
+      </a>
+      <a href="buy page 9.html" class="tilt" tabindex="0">
+        <h3>Engine6.0 Cod Tweaker</h3>
+        <p>So this tweak allows you to chagne cloring a shows whitin call of duty(Click to See more Details)</p>
+      </a>
+      <a href="buy page 3.html" class="tilt" tabindex="0">
+        <h3>Engine6.0 Temp Spoofer</h3>
+        <p>Rember this is only temporey and the spoof will stop as soon as your done doing what your doing</p>
+      </a>
+      <a href="buy page 10.html" class="tilt" tabindex="0">
+        <h3>Engine6.0 Monco</h3>
+        <p>you can add your own back gorund also has option for other cool live back gorunds(Click to See more Details)</p>
+      </a>
+      <a href="buy page 11.html" class="tilt" tabindex="0">
+        <h3>Engine6.0 Roblox APi</h3>
+        <p>This roblox Api is made for an Executor it Has auto update and more(Click to See more Details)</p>
+      </a>
+      <a href="buy page 12.html" class="tilt" tabindex="0">
+        <h3>Engine6.0 Steam and battle net Warzone Ready Accounts</h3>
+        <p>Comes with email and pass for email and Username and pass for account wiht phone number added</p>
+      </a>
+      <a href="buy page 13.html" class="tilt" tabindex="0">
+        <h3>Engine6.0 Roblox Account Genrator</h3>
+        <p>Can genrate up to 10000 Accounts at a time(Click to See more Details)</p>
+      </a>
+      <a href="buy page 14.html" class="tilt" tabindex="0">
+        <h3>Engine6.0 Fornight Exesternal</h3>
+        <p>Our fornight Exesternal is one of the best it has silent aim bot radar ESp (Click to See more Details)</p>
+      </a>
+      <a href="buy page 15.html" class="tilt" tabindex="0">
+        <h3>Engine6.0 Rebrands</h3>
+        <p>A Rebrand is when we sell you our Entire Source code for One of Our cheats</p>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 Engine6.0 Services. All rights reserved.
+  </footer>
+
+  <script>
+    // Interactive 3D tilt effect on elements with class "tilt"
+    const tiltElements = document.querySelectorAll('.tilt');
+
+    tiltElements.forEach(el => {
+      el.addEventListener('mousemove', (e) => {
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left; // mouse x within element
+        const y = e.clientY - rect.top;  // mouse y within element
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateX = ((y - centerY) / centerY) * 10; // max 10deg rotation
+        const rotateY = ((x - centerX) / centerX) * 10;
+
+        el.style.transform = `rotateX(${-rotateX}deg) rotateY(${rotateY}deg) translateZ(20px)`;
+      });
+
+      el.addEventListener('mouseleave', () => {
+        el.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0)';
+      });
+
+      // Optional: subtle "pop" on click (press)
+      el.addEventListener('mousedown', () => {
+        el.style.transform += ' scale(0.95)';
+      });
+      el.addEventListener('mouseup', () => {
+        el.style.transform = el.style.transform.replace(' scale(0.95)', '');
+      });
+      el.addEventListener('mouseout', () => {
+        el.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0)';
+      });
+    });
+  </script>
+</body>
+</html>

@@ -3,575 +3,312 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Engine6.0</title>
+  <title>Engine6.0 Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
   <style>
-
-#loadingScreen {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: #000;
-  color: white;
-  font-size: 2em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  user-select: none;
-}
-
-.loader {
-  animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-    html, body {
-      margin: 0; padding: 0; height: 100%; overflow: hidden;
-      background: #000; font-family: Arial, sans-serif;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      transform-style: preserve-3d;
+      perspective: 1000px;
     }
-    canvas {
-      position: absolute; top: 0; left: 0; display: block; z-index: 0;
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #0e0e15;
+      color: white;
     }
     nav {
-      position: fixed; top: -60px; width: 100%; height: 60px;
-      background: rgba(0,0,0,0.8); display: flex;
-      justify-content: center; align-items: center;
-      transition: top 0.3s; z-index: 10;
-    }
-    body:hover nav {
-      top: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background-color: #0a0a12;
+      position: fixed;
+      width: 100%;
+      z-index: 1000;
     }
     nav a {
-      color: white; margin: 0 20px; text-decoration: none;
-      font-size: 1.2em; cursor: pointer;
+      color: #b4aaff;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: 500;
+      transition: color 0.3s;
+      user-select: none;
     }
-    nav a.hidden {
-      display: none;
+    nav a:hover {
+      color: #ffffff;
     }
-    .center-text {
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 4em; color: rgba(255, 255, 255, 0.8);
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-      z-index: 1;
-      pointer-events: none;
+    nav .logo {
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: #a78bfa;
+      user-select: none;
     }
-    .page {
-      display: none;
+    header {
+      background: url('https://images.unsplash.com/photo-1601050690185-0f3f5f5b9982') no-repeat center center/cover;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 0 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
       position: absolute;
-      top: 60px; left: 0;
-      width: 100%; height: calc(100% - 60px);
-      overflow-y: auto;
-      padding: 40px;
-      box-sizing: border-box;
-      color: white;
+      inset: 0;
+      background: radial-gradient(circle at center, #7b61ff88, transparent 70%);
+      animation: pulseBG 4s ease-in-out infinite;
+      z-index: 0;
+      pointer-events: none;
+      filter: blur(40px);
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 10, 25, 0.85);
       z-index: 1;
-      /* No background here to let canvas show */
     }
-    .page.active {
-      display: block;
+    @keyframes pulseBG {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 0.8;
+      }
+      50% {
+        transform: scale(1.2);
+        opacity: 0.4;
+      }
     }
-    /* Only non-home pages have background */
-    #productsPage, #signUpPage, #signInPage, #adminPanel {
-      background: #111;
+    header h1,
+    header p {
+      position: relative;
+      z-index: 2;
     }
-    /* Products */
-    .product-grid {
+    header h1 {
+      font-size: 3em;
+      color: #a280ff;
+      font-weight: 800;
+      text-shadow: 0 0 15px #7b61ff;
+    }
+    header p {
+      max-width: 600px;
+      margin: 20px auto;
+      font-size: 1.1em;
+      color: #cfcfff;
+      text-shadow: 0 0 10px #7b61ff88;
+    }
+    /* 3D tilt container style */
+    .tilt {
+      transition: transform 0.2s ease;
+      will-change: transform;
+      cursor: pointer;
+      user-select: none;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(124, 104, 255, 0.15);
+      background: #181824;
+      padding: 20px;
+      color: #d1d1e9;
+      display: block; /* for cards links */
+      text-decoration: none;
+    }
+    .tilt:hover {
+      box-shadow: 0 0 30px rgba(124, 104, 255, 0.6);
+    }
+    .tilt h3 {
+      color: #a78bfa;
+      margin-bottom: 10px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 12px 30px;
+      background: #7b61ff;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      margin-top: 10px;
+      box-shadow: 0 0 15px #7b61ff;
+      transition: box-shadow 0.3s ease;
+      user-select: none;
+    }
+    .btn:hover {
+      box-shadow: 0 0 30px #7b61ffcc;
+    }
+    .section {
+      padding: 80px 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .section h2 {
+      text-align: center;
+      font-size: 2rem;
+      color: #c4b5fd;
+      margin-bottom: 40px;
+    }
+    .products {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
+      gap: 30px;
     }
-    .product-panel {
-      background: #222;
-      border-radius: 12px;
-      padding: 20px;
-      color: white;
-      box-shadow: 0 0 10px rgba(255,255,255,0.1);
-      transition: transform 0.2s;
-    }
-    .product-panel:hover {
-      transform: scale(1.05);
-    }
-    /* Show Keys Button */
-    .showKeysBtn {
-      margin-top: 10px;
-      padding: 8px 12px;
-      cursor: pointer;
-      border: none;
-      border-radius: 6px;
-      background: #2bff00;
-      color: white;
-      font-size: 1em;
-      transition: background 0.2s;
-    }
-    .showKeysBtn:hover {
-      background: #0056b3;
-    }
-    /* Forms */
-    form {
-      max-width: 400px;
-      margin: 0 auto;
-      background: #222;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(255,255,255,0.1);
-    }
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: bold;
-    }
-    input[type="text"], input[type="email"], input[type="password"] {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 20px;
-      border: none;
-      border-radius: 6px;
-      font-size: 1em;
-    }
-    button {
-      background: #007bff;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      font-size: 1em;
-      border-radius: 6px;
-      cursor: pointer;
-      width: 100%;
-    }
-    button:hover {
-      background: #0056b3;
-    }
-    /* Admin Panel */
-    #adminPanel ul {
-      list-style: none;
-      padding-left: 0;
-    }
-    #adminPanel li {
-      background: #222;
-      margin-bottom: 10px;
-      padding: 12px;
-      border-radius: 8px;
-      box-shadow: 0 0 6px rgba(255,255,255,0.1);
-    }
-    /* Popup Overlay */
-    #keyPopup {
-      display: none; 
-      position: fixed; 
-      top: 0; left: 0; 
-      width: 100%; height: 100%; 
-      background: rgba(0,0,0,0.8); 
-      z-index: 20; 
-      justify-content: center; 
-      align-items: center;
-    }
-    #keyPopup > div {
-      background: #222; 
-      padding: 30px; 
-      border-radius: 12px; 
-      width: 300px; 
-      color: white; 
-      position: relative;
-      box-sizing: border-box;
-    }
-    #keyPopup h2 {
-      margin-top: 0;
-      margin-bottom: 15px;
-      font-weight: normal;
-      font-size: 1.8em;
+    footer {
       text-align: center;
-    }
-    #keyList {
-      list-style: none; 
-      padding-left: 0; 
-      margin: 0;
-      max-height: 150px;
-      overflow-y: auto;
-      border-top: 1px solid #444;
-      border-bottom: 1px solid #444;
-    }
-    #keyList li {
-      padding: 8px 0;
-      border-bottom: 1px solid #444;
-      font-family: monospace;
-      font-size: 1.1em;
-      user-select: all;
-    }
-    #keyPopup a {
-      display: block; 
-      margin-top: 20px; 
-      background: #00ff37; 
-      padding: 12px; 
-      text-align: center; 
-      border-radius: 6px; 
-      text-decoration: none; 
-      color: white; 
-      font-weight: bold;
-      font-size: 1.1em;
-      transition: background 0.2s;
-    }
-    #keyPopup a:hover {
-      background: #0056b3;
-    }
-    #closePopup {
-      position: absolute; 
-      top: 10px; right: 10px; 
-      background: none; 
-      border: none; 
-      color: white; 
-      font-size: 28px; 
-      cursor: pointer;
-      line-height: 1;
-      padding: 0;
+      padding: 30px;
+      background: #0a0a12;
+      color: #aaaaff;
+      font-size: 0.9em;
+      margin-top: 60px;
       user-select: none;
+    }
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2rem;
+      }
+      .btn {
+        font-size: 0.9em;
+        padding: 10px 20px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <canvas id="bgCanvas"></canvas>
-
-<body>
-
-  <!-- Loading Screen -->
-  <div id="loadingScreen">
-    <div class="loader">Loading Engine6.0...</div>
-  </div>
-
-  <!-- Your existing content below -->
-  <canvas id="bgCanvas"></canvas>
-  <!-- ... rest of your page ... -->
-
-  <script>
-    // Your existing scripts...
-
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        const loadingScreen = document.getElementById('loadingScreen');
-        loadingScreen.style.display = 'none';
-      }, 3000);
-    });
-  </script>
-</body>
->
-
+  <!-- Navigation -->
   <nav>
-    <a id="navHome" onclick="showPage('home')">Home</a>
-    <a id="navProducts" onclick="showPage('productsPage')">Products</a>
-    <a id="navSignUp" onclick="showPage('signUpPage')">Sign Up</a>
-    <a id="navSignIn" onclick="showPage('signInPage')">Sign In</a>
-    <a id="navAdmin" class="hidden" onclick="showPage('adminPanel')">Admin Panel</a>
+    <div class="logo">Engine6.0 Services</div>
+    <div>
+      <a href="Untitled-11.html">Home</a>
+      <a href="dowloads.html">Downloads</a>
+      <a href="#products">Products</a>
+      <a href="Support.html">Support</a>
+      <a href="Faq.html">FAQ</a>
+      <a href="Contact.html">Contact</a>
+    <a href="Staus.html">Status</a>
+    <a href="Uploads.html">Profile</a>
+    <a href="profile.html">Uploads</a>
+    <a href="people.html">Updates</a>
+    <a href="tut.html">Tutorial</a>
+    <a href="Anc.html">daily Announcements</a>
+    <a href="Settings.html">Settings</a>
+    </div>
   </nav>
 
-  <div class="center-text">Engine6.0</div>
+  <!-- Hero Section -->
+  <header id="home">
+    <h1>Industry-Leading Cheats</h1>
+    <p>Experience next-level gaming enhancements, fully optimized and trusted by thousands.</p>
+    <a href="#products" class="btn tilt">Please open the Contact Tab From the Home page Or a glitch Will happen Also if you dont see every tab when you click on one just go back to the home page  Thank you so much!!</a>
+  </header>
 
-  <div id="home" class="page active">
-    <!-- empty - canvas shows through -->
-  </div>
-
-  <div id="productsPage" class="page">
-    <h1 style="text-align:center;">Our Products</h1>
-    <div class="product-grid">
-      <div class="product-panel" data-product="Engine6.0 Executor">
-        Engine6.0 Executor<br>               has a 100% Unc and 100% Sunc and has a built in spoofer that spoofs evreything(prices are 2.50 a day 5.00 a weak 10.00 a month and 30.00 life time)
-
-<img src="https://cdn.discordapp.com/attachments/1350345959405518861/1379706293094191104/C27EFD73-A875-44AD-A201-06EF50AEF302.png?ex=6847ce9d&is=68467d1d&hm=6765c763892269c1802063f1963ee9346854dc85203fc7234ee0f28c6a809a8b&" alt="Product Image" style="width: 100%; max-width: 200px; margin: 10px 0; border-radius: 8px;">
-
-        <button class="showKeysBtn">Buy Executor</button>
-      </div>
-      <div class="product-panel" data-product="Product 2">
-        Warzine fecurity<br>                 B06/warzone exsternal cheat wokrs on all version of windows has aimbot esp radar no recoil and much more
-
- <img src="https://imagedelivery.net/HL_Fwm__tlvUGLZF2p74xw/37c0fc0a-c4b2-487a-44f6-76d07f404700/public" alt="Product Image" style="width: 100%; max-width: 200px; margin: 10px 0; border-radius: 8px;">
-
-        <button class="showKeysBtn">Buy fecurity</button>
-      </div>
-      <div class="product-panel" data-product="Product 3">
-        Engine6.0 Spoofer<br>                 Spoofes evreything even battle eye and vangaurd
-
-<img src="https://cdn.discordapp.com/attachments/1350345959405518861/1381643309562466395/11749D51-F139-4E56-BB3C-610F93EF7770.png?ex=6848431a&is=6846f19a&hm=0c68ed085d2c0ff22479330fc0001c16cc1cb642eb180069e3a93dc7d681b5a3&" alt="Product Image" style="width: 100%; max-width: 200px; margin: 10px 0; border-radius: 8px;">
-
-        <button class="showKeysBtn">Buy spoofer</button>
-      </div>
-      <div class="product-panel" data-product="Product 4">
-        Awp Executor<br>>                      has a 100% Unc and 100% Sunc and much more like hwid reset and soopfs
-
-<img src="https://cdn.discordapp.com/attachments/1350345959405518861/1381621957157454048/886A5A35-38DD-44DC-A666-879347E7ABAF.png?ex=68482f37&is=6846ddb7&hm=4c6319442a4ff6f7ce3b11f624c5ec1aef87efead10553bead55d0584385e6dd&" alt="Product Image" style="width: 100%; max-width: 200px; margin: 10px 0; border-radius: 8px;">
-
-        <button class="showKeysBtn">Buy Awp.gg</button>
-      </div>
-      <div class="product-panel" data-product="Product 5">
-        Untrned exesternal<br>                 has aimbot sinet aim esp fov chagner zombie esp loot esp vechial esp and much more!
-
- <img src="https://imagedelivery.net/HL_Fwm__tlvUGLZF2p74xw/e399cc86-d84c-40ab-a51d-4a43eedb6100/public" alt="Product Image" style="width: 100%; max-width: 200px; margin: 10px 0; border-radius: 8px;">
-
-        <button class="showKeysBtn">Buy Untrned exesternal</button>
-      </div>
-<div class="product-panel" data-product="Product 6">
-  <p>Engine6.0 Cs2 external<br> Aim bot, ESP, aim bot, and much more — trigger bot, rainbow ESP</p>
-
-  <img src="https://media.discordapp.net/attachments/1350345959405518861/1381475754461630528/4EF82B9F-ED70-4D48-9DC7-230693A972E4.png?ex=6847a70e&is=6846558e&hm=ef4de2e38547c0bd7ed3d13164205de9afb0cb5bb3ac7e1ebb089331797c6edb&=&format=webp&quality=lossless" alt="Product Image" style="width: 100%; max-width: 200px; margin: 10px 0; border-radius: 8px;">
-
-  <button class="showKeysBtn">Show options</button>
-</div>
-
+  <!-- Products Section -->
+  <section class="section" id="products">
+    <h2>Our Products</h2>
+    <div class="products">
+      <!-- 15 product cards -->
+      <a href="buy page.html" class="tilt" tabindex="0">
+        <h3>Engine6.0 Roblox Executor</h3>
+        <p>Optimize for game performance with precision controls and Has 100% Unc and 100% Sunc(Click to See more Details)</p>
+      </a>
+      <a href="buy page 2.html" class="tilt" tabindex="0">
+        <h3>Engine6.0 Perm Spoofer</h3>
+        <p>Can spoof any anti cheat and also works for any game even roblox for hwid resetes ip reset or even perm spoof(Click to See more Details)</p>
+      </a>
+      <a href="buy page 5.html" class="tilt" tabindex="0">
+        <h3>Engine6.0 Cs2 Exesternal</h3>
+        <p>Has Esp aim bot water mark Aimbot Smooth control and Spread</p>
+      </a>
+      <a href="buy page 4.html" class="tilt" tabindex="0">
+        <h3>Engine6.0 Cod/Warzone Internal</h3>
+        <p>Has Unlock all Sient aim normal aimbot Built in Spoofer And undected(Click to See more Details)</p>
+      </a>
+      <a href="buy page 6.html" class="tilt" tabindex="0">
+        <h3>Engine6.0 Cod/Warzone Exesternal</h3>
+        <p>Has one of the best aimbot you can have Memorey Aimbot And esp Uav and Advanced Uav(Click to See more Details)</p>
+      </a>
+      <a href="buy page 7.html" class="tilt" tabindex="0">
+        <h3>Engine6.0 Fivem Exesternal</h3>
+        <p>Has esp aimbot Sient aim Trigger bot teloprts godmode Noclip(Click to See more Details)</p>
+      </a>
+      <a href="buy page 8.html" class="tilt" tabindex="0">
+        <h3>Engine6.0 Untrned Internal</h3>
+        <p>Has a built in spoofer for the best protection Possible(Click to See more Details)</p>
+      </a>
+      <a href="buy page 9.html" class="tilt" tabindex="0">
+        <h3>Engine6.0 Cod Tweaker</h3>
+        <p>So this tweak allows you to chagne cloring a shows whitin call of duty(Click to See more Details)</p>
+      </a>
+      <a href="buy page 3.html" class="tilt" tabindex="0">
+        <h3>Engine6.0 Temp Spoofer</h3>
+        <p>Rember this is only temporey and the spoof will stop as soon as your done doing what your doing</p>
+      </a>
+      <a href="buy page 10.html" class="tilt" tabindex="0">
+        <h3>Engine6.0 Monco</h3>
+        <p>you can add your own back gorund also has option for other cool live back gorunds(Click to See more Details)</p>
+      </a>
+      <a href="buy page 11.html" class="tilt" tabindex="0">
+        <h3>Engine6.0 Roblox APi</h3>
+        <p>This roblox Api is made for an Executor it Has auto update and more(Click to See more Details)</p>
+      </a>
+      <a href="buy page 12.html" class="tilt" tabindex="0">
+        <h3>Engine6.0 Steam and battle net Warzone Ready Accounts</h3>
+        <p>Comes with email and pass for email and Username and pass for account wiht phone number added</p>
+      </a>
+      <a href="buy page 13.html" class="tilt" tabindex="0">
+        <h3>Engine6.0 Roblox Account Genrator</h3>
+        <p>Can genrate up to 10000 Accounts at a time(Click to See more Details)</p>
+      </a>
+      <a href="buy page 14.html" class="tilt" tabindex="0">
+        <h3>Engine6.0 Fornight Exesternal</h3>
+        <p>Our fornight Exesternal is one of the best it has silent aim bot radar ESp (Click to See more Details)</p>
+      </a>
+      <a href="buy page 15.html" class="tilt" tabindex="0">
+        <h3>Engine6.0 Rebrands</h3>
+        <p>A Rebrand is when we sell you our Entire Source code for One of Our cheats</p>
+      </a>
     </div>
-  </div>
+  </section>
 
-  <div id="signUpPage" class="page">
-    <h1 style="text-align:center;">Sign Up</h1>
-    <form id="signUpForm">
-      <label for="signupName">Name</label>
-      <input type="text" id="signupName" required />
-      <label for="signupEmail">Email</label>
-      <input type="email" id="signupEmail" required />
-      <label for="signupPassword">Password</label>
-      <input type="password" id="signupPassword" required />
-      <button type="submit">Register</button>
-    </form>
-  </div>
-
-  <div id="signInPage" class="page">
-    <h1 style="text-align:center;">Sign In</h1>
-    <form id="signInForm">
-      <label for="signinEmail">Email</label>
-      <input type="email" id="signinEmail" required />
-      <label for="signinPassword">Password</label>
-      <input type="password" id="signinPassword" required />
-      <button type="submit">Login</button>
-    </form>
-  </div>
-
-  <div id="adminPanel" class="page">
-    <h1 style="text-align:center;">Admin Panel</h1>
-    <h2>Registered Users:</h2>
-    <ul id="userList"></ul>
-  </div>
-
-  <!-- Popup Overlay -->
-  <div id="keyPopup">
-    <div>
-      <button id="closePopup" aria-label="Close popup">×</button>
-      <h2>Product Keys</h2>
-      <ul id="keyList"></ul>
-      <a href="https://cash.app/$johnyukhh" target="_blank" rel="noopener noreferrer">Buy</a>
-    </div>
-  </div>
+  <footer>
+    &copy; 2025 Engine6.0 Services. All rights reserved.
+  </footer>
 
   <script>
-    // Background dots canvas
-    const canvas = document.getElementById('bgCanvas');
-    const ctx = canvas.getContext('2d');
+    // Interactive 3D tilt effect on elements with class "tilt"
+    const tiltElements = document.querySelectorAll('.tilt');
 
-    let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerHeight;
+    tiltElements.forEach(el => {
+      el.addEventListener('mousemove', (e) => {
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left; // mouse x within element
+        const y = e.clientY - rect.top;  // mouse y within element
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
 
-    const dots = Array.from({ length: 100 }, () => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      vx: (Math.random() - 0.5) * 0.5,
-      vy: (Math.random() - 0.5) * 0.5
-    }));
+        const rotateX = ((y - centerY) / centerY) * 10; // max 10deg rotation
+        const rotateY = ((x - centerX) / centerX) * 10;
 
-    function draw() {
-      ctx.clearRect(0, 0, width, height);
-
-      for (let i = 0; i < dots.length; i++) {
-        const d = dots[i];
-        d.x += d.vx;
-        d.y += d.vy;
-
-        if (d.x < 0 || d.x > width) d.vx *= -1;
-        if (d.y < 0 || d.y > height) d.vy *= -1;
-
-        ctx.beginPath();
-        ctx.arc(d.x, d.y, 2, 0, Math.PI * 2);
-        ctx.fillStyle = '#ffffff';
-        ctx.fill();
-
-        for (let j = i + 1; j < dots.length; j++) {
-          const d2 = dots[j];
-          const dx = d.x - d2.x;
-          const dy = d.y - d2.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-
-          if (dist < 100) {
-            ctx.beginPath();
-            ctx.moveTo(d.x, d.y);
-            ctx.lineTo(d2.x, d2.y);
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
-            ctx.stroke();
-          }
-        }
-      }
-
-      requestAnimationFrame(draw);
-    }
-    draw();
-
-    window.addEventListener('resize', () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    });
-
-    // Page navigation logic
-    function showPage(pageId) {
-      // Hide all pages
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-
-      // Show requested page
-      document.getElementById(pageId).classList.add('active');
-
-      // Show/hide center text on home only
-      const centerText = document.querySelector('.center-text');
-      if (pageId === 'home') {
-        centerText.style.display = 'block';
-      } else {
-        centerText.style.display = 'none';
-      }
-    }
-
-    // User management (simple in-memory storage)
-    let users = [];
-    let currentUser = null;
-
-    // Helper: update nav for signed-in user
-    function updateNav() {
-      const navSignIn = document.getElementById('navSignIn');
-      const navSignUp = document.getElementById('navSignUp');
-      const navAdmin = document.getElementById('navAdmin');
-
-      if (currentUser) {
-        navSignIn.textContent = 'Sign Out (' + currentUser.name + ')';
-        navSignUp.style.display = 'none';
-
-        if (currentUser.email === 'duckey5656@gmail.com') {
-          navAdmin.classList.remove('hidden');
-        } else {
-          navAdmin.classList.add('hidden');
-        }
-      } else {
-        navSignIn.textContent = 'Sign In';
-        navSignUp.style.display = 'inline';
-        navAdmin.classList.add('hidden');
-      }
-    }
-
-    // Sign Up form submit
-    document.getElementById('signUpForm').addEventListener('submit', e => {
-      e.preventDefault();
-      const name = document.getElementById('signupName').value.trim();
-      const email = document.getElementById('signupEmail').value.trim().toLowerCase();
-      const password = document.getElementById('signupPassword').value;
-
-      if (users.some(u => u.email === email)) {
-        alert('Email already registered');
-        return;
-      }
-
-      users.push({ name, email, password });
-      alert('Registration successful! Please sign in.');
-      document.getElementById('signUpForm').reset();
-      showPage('signInPage');
-    });
-
-    // Sign In form submit
-    document.getElementById('signInForm').addEventListener('submit', e => {
-      e.preventDefault();
-      const email = document.getElementById('signinEmail').value.trim().toLowerCase();
-      const password = document.getElementById('signinPassword').value;
-
-      const user = users.find(u => u.email === email && u.password === password);
-      if (!user) {
-        alert('Invalid email or password');
-        return;
-      }
-
-      currentUser = user;
-      alert('Welcome, ' + user.name + '!');
-      updateNav();
-      showPage('home');
-      document.getElementById('signInForm').reset();
-      populateUserList();
-    });
-
-    // Sign Out logic
-    document.getElementById('navSignIn').addEventListener('click', () => {
-      if (currentUser) {
-        if (confirm('Sign out?')) {
-          currentUser = null;
-          updateNav();
-          showPage('home');
-        }
-      } else {
-        showPage('signInPage');
-      }
-    });
-
-    // Admin panel user list
-    function populateUserList() {
-      if (!currentUser || currentUser.email !== 'duckey5656@gmail.com') {
-        document.getElementById('userList').innerHTML = '<li>Access denied.</li>';
-        return;
-      }
-
-      const ul = document.getElementById('userList');
-      ul.innerHTML = '';
-      users.forEach(u => {
-        const li = document.createElement('li');
-        li.textContent = `Name: ${u.name}, Email: ${u.email}`;
-        ul.appendChild(li);
+        el.style.transform = `rotateX(${-rotateX}deg) rotateY(${rotateY}deg) translateZ(20px)`;
       });
-    }
 
-    // Keys popup logic
-    const keyPopup = document.getElementById('keyPopup');
-    const keyList = document.getElementById('keyList');
-    const closePopup = document.getElementById('closePopup');
+      el.addEventListener('mouseleave', () => {
+        el.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0)';
+      });
 
-    const productKeys = {
-      "Product 1": ["1 day key 5.00", "1 weak key 10.00", "1 month key 20.00"],
-      "Product 2": ["1 day key 3.00", "1 weak key 6,99", "1 month key 20.00"],
-      "Product 3": ["1 day key 3.00", "1 month key 20.00", "1 weak key 10.00"],
-      "Product 4": ["1 day key 2.50", "", "1 weak key 5.00"],
-      "Product 5": ["1 weak key 6,99", "1 month key 20.00", "1 day key 3.00"],
-      
-      
-    };
-
-    document.querySelectorAll('.showKeysBtn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const productName = btn.closest('.product-panel').dataset.product;
-        keyList.innerHTML = '';
-
-        const keys = productKeys[productName] || [];
-        keys.forEach(key => {
-          const li = document.createElement('li');
-          li.textContent = key;
-          keyList.appendChild(li);
-        });
-
-        keyPopup.style.display = 'flex';
+      // Optional: subtle "pop" on click (press)
+      el.addEventListener('mousedown', () => {
+        el.style.transform += ' scale(0.95)';
+      });
+      el.addEventListener('mouseup', () => {
+        el.style.transform = el.style.transform.replace(' scale(0.95)', '');
+      });
+      el.addEventListener('mouseout', () => {
+        el.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0)';
       });
     });
-
-    closePopup.addEventListener('click', () => {
-      keyPopup.style.display = 'none';
-    });
-
-    // Clicking outside popup closes it
-    keyPopup.addEventListener('click', e => {
-      if (e.target === keyPopup) {
-        keyPopup.style.display = 'none';
-      }
-    });
-
-    // Initial nav update
-    updateNav();
-
-    
   </script>
 </body>
 </html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Purchase Tool - Solar Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #0e0e15;
+      color: white;
+      margin: 0;
+      padding: 40px 20px;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .tilt-card {
+      background: #181824;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 0 20px rgba(124, 104, 255, 0.15);
+      transition: transform 0.15s ease, box-shadow 0.3s ease;
+      transform-style: preserve-3d;
+      perspective: 800px;
+      will-change: transform;
+    }
+
+    .tilt-card:hover {
+      box-shadow: 0 0 50px rgba(124, 104, 255, 0.7);
+    }
+
+    .product-card img {
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .product-card h2 {
+      color: #a78bfa;
+      font-size: 1.6rem;
+      margin-bottom: 10px;
+    }
+
+    .features {
+      margin-top: 20px;
+      padding-left: 20px;
+    }
+
+    .features li {
+      margin-bottom: 10px;
+      color: #d1d1e9;
+    }
+
+    .purchase-box h3 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: #c4b5fd;
+    }
+
+    .price {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #a78bfa;
+      margin: 10px 0 30px;
+    }
+
+    .payment-options {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .payment-options a {
+      display: block;
+      text-align: center;
+      padding: 12px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: 0 0 15px rgba(124, 104, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .stripe { background: #635bff; color: white; }
+    .cashapp { background: #00d632; color: white; }
+    .giftcard { background: #ffb300; color: #1c1c1c; }
+    .paypal { background: #0070ba; color: white; }
+
+    .payment-options a:hover {
+      box-shadow: 0 0 25px rgba(124, 104, 255, 0.5);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Product Section -->
+    <div class="product-card tilt-card">
+      <img src="https://cdn.discordapp.com/attachments/1350345959405518861/1384022767816413225/6E8211E6-1875-4989-8B7F-3C8D4A464A50.png?ex=68601465&is=685ec2e5&hm=455bed24f5f79e692a517d36ebc9831ff0023bd25838793244a303b0c6a8bb0b&" alt="Product Image" />
+      <h2>Engine6.0 Cod/Warzone internal</h2>
+      <ul class="features">
+        <li>⚡💻 Supports all versions of Windows 10 and Windows 11(24H2 Too). AMD and Intel Processors
+📙 Supports BattleNet, Steam , xbox gamepass
+
+
+💀 Working On Zombies
+
+✅ HWID Spoofer Included
+⛔ Anti-Cheat Blocker
+🎮 Controller Compatible
+🔒unlock all
+👤  Shadow ban blocker included
+
+
+📖 Features
+🎯 AIMBOT
+
+Enable/Disable Aim
+Aim Type: View Angles / P-Silent
+Aim Bone: Helmet / Head / Neck / Chest / Pelvis / Any
+Aim Keybind
+Aim Smoothness Slider
+Prediction: On / Off
+Prediction Strength Slider
+No Recoil: On / Off
+Recoil Slider
+No Sway: On / Off
+No Spread: On / Off
+Targeting: Enemies Only / Visible Check / Sticky Aim / Skip Downed / Skip Self Revive
+Closest by: Smart / FOV / Distance
+Override Bone: Left Foot / Right Foot / Left Knee / Right Knee / Helmet / Head / Neck / Chest / Pelvis
+
+
+🎯 Anti Aim
+
+Keybind
+Anti-Aim: Spin Bot / Jitter Bot / 180 Turn Bot
+
+
+👁 ESP
+
+Box ESP
+Corner Box ESP
+Filled Box ESP
+3D Box ESP
+3D Filled Box ESP
+Skeleton ESP
+Head Skeleton ESP
+Health Bar ESP
+Distance ESP
+Player Name ESP
+Bubble ESP
+Team ID ESP
+Weapon ESP
+Kills ESP
+Deaths ESP
+Player OUtlines ESP
+Weapon OUtline ESP
+Compass ESP
+2D Radar
+Advanced UAV
+UAV Type: Dot / Directional
+Aim Warnings
+Bullet Tracers
+Enable Loot ESP
+Ammo ESP
+Weapons ESP
+Money ESP
+Armor Plates ESP
+Supply Bos ESP
+Supply Cache ESP
+Misc ESP
+Loot Bounds ESP
+Loot Distance Slider
+Enemies Only
+Visible Check
+Compass Visibility Check
+Compass Aim Warnings Check
+Player Outlines Opaque Fill
+Player Outlines Transparent Fill
+Player Outlines Width Slider
+Gun Outline Width Slider
+Radar Zoom Slider
+Aim Warning FOV Slider
+Tracer Fade Out Duration Slider
+Tracer Line Thickness Slider
+Tracer LIne X Thickness Slider
+Compass Zoom Slider
+Compass Arrow Size Slider
+Compass Arrow Fill Slider
+Rainbow Compass
+Rainbow Bullet Tracers
+Rainbow Fov Circle
+Rainbow Player Outlines
+Rainbow Weapon Outline
+Rainbow Crosshair
+
+
+📝 Miscellaneous
+
+Disable Flinch Effects
+Disable Stun Effects
+Disable Flashbang Effects
+Disable Shield Shake
+Disable Fog
+Rapid Fire
+Auto Fire
+Fast Reload
+Instant Swap
+Server Crasher
+Field Of View
+FOV Value Slider
+Third Person View
+Apply Loadout Name
+
+
+🔍 Lobby
+
+Team ID
+Player Name
+Ping
+Kills
+Deaths
+Rank
+
+
+⚙️ Settings
+
+1 to 10 Save Settings
+Save / Load Setting
+Loader Color Customize</li>
+
+      </ul>
+    </div>
+
+    <!-- Purchase Section -->
+    <div class="tilt-card purchase-box">
+      <h3>Choose Payment Method</h3>
+      <p class="price">Day key $5.00</p>
+    <p class="price">Weak key $10.00</p>
+    <p class="price">Month Key $20.00</p>
+    <p class="price">Lifetime Key $250.00</p>
+      <div class="payment-options">
+        <a href="https://buy.stripe.com/your-stripe-link" class="stripe">Pay with Card (Stripe)(Comming soon)</a>
+        <a href="https://cash.app/$johnyukhh" class="cashapp">Pay with Cash App</a>
+        <a href="mailto:Duckey5656@gmail.com?subject=Gift%20Card%20Payment" class="giftcard">Pay with Gift Card</a>
+        <a href="https://www.paypal.me/yourpaypal" class="paypal">Pay with PayPal(Comming soon)</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.tilt-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateX = ((y - centerY) / centerY) * 18;
+        const rotateY = ((x - centerX) / centerX) * 18;
+
+        card.style.transform = `perspective(800px) rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg)';
+      });
+
+      card.addEventListener('mousedown', () => {
+        card.style.transform += ' scale(0.97)';
+      });
+
+      card.addEventListener('mouseup', () => {
+        card.style.transform = card.style.transform.replace(' scale(0.97)', '');
+      });
+
+      card.addEventListener('mouseout', () => {
+        card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg)';
+      });
+    });
+  </script>
+
+</body>
+</html>

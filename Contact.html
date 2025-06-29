@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact - Engine6.0 Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #0e0e15;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 80px 20px;
+      perspective: 1000px;
+    }
+    h1 {
+      color: #a78bfa;
+      margin-bottom: 40px;
+    }
+    .contact-list {
+      list-style: none;
+      padding: 0;
+      max-width: 400px;
+      width: 100%;
+      display: grid;
+      gap: 20px;
+    }
+    .tilt {
+      background: #181824;
+      padding: 20px 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(124, 104, 255, 0.15);
+      transition: box-shadow 0.3s ease, transform 0.2s ease;
+      cursor: pointer;
+      user-select: none;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+    .tilt:hover {
+      box-shadow: 0 0 30px #7b61ffcc;
+    }
+    .tilt a {
+      color: #a78bfa;
+      font-weight: 600;
+      text-decoration: none;
+      display: block;
+      transform: translateZ(30px);
+      transition: color 0.3s ease;
+    }
+    .tilt a:hover {
+      color: #d1d1e9;
+      text-decoration: underline;
+    }
+    footer {
+      margin-top: auto;
+      padding: 30px;
+      text-align: center;
+      color: #aaaaff;
+      font-size: 0.9em;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Contact & Socials</h1>
+  <ul class="contact-list">
+    <li class="tilt"><a href="https://discordapp.com/users/duckey5656" target="_blank" rel="noopener noreferrer">Discord: duckey5656</a></li>
+    <li class="tilt"><a href="https://steamcommunity.com/profiles/76561199233871630/" target="_blank" rel="noopener noreferrer">Steam Profile</a></li>
+    <li class="tilt"><a href="https://discord.gg/RaxJfKse" target="_blank" rel="noopener noreferrer">Discord Server</a></li>
+    <li class="tilt"><a href="https://steamcommunity.com/groups/YOUR_STEAM_GROUP" target="_blank" rel="noopener noreferrer">Steam Group(Comming Soon)</a></li>
+    <li class="tilt"><a href="https://www.youtube.com/channel/YOUR_YOUTUBE_CHANNEL" target="_blank" rel="noopener noreferrer">YouTube Channel(Comming Soon)</a></li>
+    <li class="tilt"><a href="https://www.tiktok.com/@YOUR_TIKTOK_USERNAME" target="_blank" rel="noopener noreferrer">TikTok Channel(Comming Soon)</a></li>
+  </ul>
+
+  <footer>
+    &copy; 2025 Engine6.0 Services. All rights reserved.
+  </footer>
+
+  <script>
+    const tiltItems = document.querySelectorAll('.tilt');
+
+    tiltItems.forEach(el => {
+      el.addEventListener('mousemove', e => {
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateX = ((y - centerY) / centerY) * 12; // max 12deg rotation for stronger effect
+        const rotateY = ((x - centerX) / centerX) * 12;
+
+        el.style.transform = `rotateX(${-rotateX}deg) rotateY(${rotateY}deg) translateZ(15px)`;
+      });
+
+      el.addEventListener('mouseleave', () => {
+        el.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0)';
+      });
+
+      el.addEventListener('mousedown', () => {
+        el.style.transform += ' scale(0.95)';
+      });
+      el.addEventListener('mouseup', () => {
+        el.style.transform = el.style.transform.replace(' scale(0.95)', '');
+      });
+      el.addEventListener('mouseout', () => {
+        el.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0)';
+      });
+    });
+  </script>
+
+</body>
+</html>

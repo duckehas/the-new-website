@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Profile - Solar Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #0e0e15;
+      color: white;
+      margin: 0;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .profile-panel {
+      background: #181824;
+      border-radius: 16px;
+      padding: 25px;
+      box-shadow: 0 0 20px rgba(124, 104, 255, 0.15);
+      max-width: 400px;
+      width: 100%;
+      transition: transform 0.15s ease, box-shadow 0.3s ease;
+      transform-style: preserve-3d;
+      perspective: 800px;
+      will-change: transform;
+      z-index: 10;
+    }
+    .profile-panel:hover {
+      box-shadow: 0 0 50px rgba(124, 104, 255, 0.7);
+    }
+
+    .profile-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 3px solid #a78bfa;
+      object-fit: cover;
+      margin-bottom: 20px;
+      cursor: pointer;
+      background: #333;
+    }
+
+    .profile-info {
+      text-align: center;
+    }
+
+    .profile-info h2 {
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: 800;
+      user-select: none;
+    }
+
+    .profile-info p {
+      margin: 4px 0;
+      opacity: 0.8;
+      font-style: italic;
+      user-select: none;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    label {
+      font-weight: 600;
+      margin-bottom: 5px;
+      user-select: none;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 12px;
+      border: none;
+      font-size: 1rem;
+      outline: none;
+      background-color: #26263a;
+      color: white;
+      resize: vertical;
+    }
+
+    textarea {
+      min-height: 80px;
+    }
+
+    button {
+      background-color: #a78bfa;
+      color: white;
+      font-weight: 700;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    button:hover {
+      background-color: #8b64e5;
+    }
+
+    /* Admin Panel */
+    .admin-panel {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #222236;
+      padding: 20px 30px 30px 30px;
+      border-radius: 16px;
+      box-shadow: 0 0 30px rgba(255, 0, 150, 0.6);
+      max-width: 400px;
+      width: 90%;
+      display: none;
+      flex-direction: column;
+      gap: 15px;
+      z-index: 1000;
+      cursor: default;
+      user-select: none;
+    }
+    .admin-header {
+      cursor: move;
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: #ff00a5;
+      margin-bottom: 10px;
+      user-select: none;
+    }
+    .comments {
+      margin-top: 15px;
+      background: #33334d;
+      border-radius: 12px;
+      padding: 10px;
+      max-height: 150px;
+      overflow-y: auto;
+      color: #eee;
+      font-size: 0.9rem;
+    }
+    .overlay {
+      display: none;
+      position: fixed;
+      top:0; left:0; right:0; bottom:0;
+      background: rgba(0,0,0,0.6);
+      z-index: 900;
+    }
+    /* Toggle Switch inside admin */
+    .toggle-switch {
+      position: relative;
+      width: 50px;
+      height: 24px;
+    }
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #555;
+      transition: 0.4s;
+      border-radius: 34px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 4px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+    .toggle-switch input:checked + .slider {
+      background-color: #a78bfa;
+    }
+    .toggle-switch input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+
+    /* Maintenance overlay */
+    #maintenanceOverlay {
+      display: none;
+      position: fixed;
+      top:0; left:0; right:0; bottom:0;
+      background: #0e0e15;
+      color: #a78bfa;
+      font-size: 2rem;
+      font-weight: 700;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      z-index: 5000;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+
+    <button class="home-btn" onclick="window.location.href='Untitled-11.Html'">Back Home</button>
+
+  <div class="profile-panel" id="profilePanel">
+    <div class="profile-header">
+      <img src="https://i.pravatar.cc/150?img=3" alt="Profile Picture" class="profile-pic" id="profilePic" title="Click to change picture" />
+      <input type="file" id="profilePicInput" accept="image/*" style="display:none" />
+      <div class="profile-info">
+        <h2 id="username">John Doe</h2>
+        <p id="email">johndoe@example.com</p>
+        <p id="bioDisplay">This is the bio.</p>
+      </div>
+    </div>
+
+    <form id="profileForm">
+      <label for="usernameInput">Username</label>
+      <input type="text" id="usernameInput" placeholder="Your name" required />
+
+      <label for="emailInput">Email</label>
+      <input type="email" id="emailInput" placeholder="your.email@example.com" required />
+
+      <label for="bioInput">Bio</label>
+      <textarea id="bioInput" placeholder="Tell us about yourself..."></textarea>
+
+      <button type="submit">Save Profile</button>
+    </form>
+  </div>
+
+  <!-- Admin Panel -->
+  <div class="overlay" id="overlay"></div>
+  <div class="admin-panel" id="adminPanel">
+    <div class="admin-header" id="adminHeader">Admin Panel</div>
+
+    <label for="maintenanceToggle">Maintenance Mode</label>
+    <div class="toggle-switch">
+      <input type="checkbox" id="maintenanceToggle" />
+      <span class="slider"></span>
+    </div>
+
+    <label for="adminComment">Add a Comment:</label>
+    <textarea id="adminComment" placeholder="Write your comment here..."></textarea>
+    <button id="addCommentBtn">Add Comment</button>
+    <div class="comments" id="comments"></div>
+    <button id="closeAdminBtn" style="margin-top:10px; background:#ff0044;">Close Admin Panel</button>
+  </div>
+
+  <!-- Maintenance Overlay -->
+  <div id="maintenanceOverlay">🚧 Website is under maintenance. Please check back later. 🚧</div>
+
+  <script>
+    const profilePic = document.getElementById('profilePic');
+    const profilePicInput = document.getElementById('profilePicInput');
+
+    const usernameEl = document.getElementById('username');
+    const emailEl = document.getElementById('email');
+    const bioDisplay = document.getElementById('bioDisplay');
+
+    const profileForm = document.getElementById('profileForm');
+    const usernameInput = document.getElementById('usernameInput');
+    const emailInput = document.getElementById('emailInput');
+    const bioInput = document.getElementById('bioInput');
+
+    const profilePanel = document.getElementById('profilePanel');
+
+    // Admin elements
+    const adminPanel = document.getElementById('adminPanel');
+    const overlay = document.getElementById('overlay');
+    const adminCommentInput = document.getElementById('adminComment');
+    const addCommentBtn = document.getElementById('addCommentBtn');
+    const commentsDiv = document.getElementById('comments');
+    const closeAdminBtn = document.getElementById('closeAdminBtn');
+    const maintenanceToggle = document.getElementById('maintenanceToggle');
+    const maintenanceOverlay = document.getElementById('maintenanceOverlay');
+    const adminHeader = document.getElementById('adminHeader');
+
+    // Load saved profile info
+    window.onload = () => {
+      const savedPic = localStorage.getItem('profilePic');
+      if (savedPic) profilePic.src = savedPic;
+
+      const savedUsername = localStorage.getItem('profileUsername') || 'John Doe';
+      usernameInput.value = savedUsername;
+      usernameEl.textContent = savedUsername;
+
+      const savedEmail = localStorage.getItem('profileEmail') || 'johndoe@example.com';
+      emailInput.value = savedEmail;
+      emailEl.textContent = savedEmail;
+
+      const savedBio = localStorage.getItem('profileBio') || 'This is the bio.';
+      bioInput.value = savedBio;
+      bioDisplay.textContent = savedBio;
+
+      // Load admin comments
+      const savedComments = JSON.parse(localStorage.getItem('adminComments') || '[]');
+      savedComments.forEach(addCommentToList);
+
+      // Load maintenance mode state
+      const maintenanceState = localStorage.getItem('maintenanceMode') === 'false';
+      maintenanceToggle.checked = maintenanceState;
+      toggleMaintenance(maintenanceState);
+
+      // Check admin access initially if email saved
+      checkAdminAccess(savedEmail);
+    };
+
+    // Profile pic change
+    profilePic.addEventListener('click', () => profilePicInput.click());
+
+    profilePicInput.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        profilePic.src = reader.result;
+        localStorage.setItem('profilePic', reader.result);
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Save profile
+    profileForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const usernameVal = usernameInput.value.trim();
+      const emailVal = emailInput.value.trim().toLowerCase();
+      const bioVal = bioInput.value.trim();
+
+      if (!usernameVal || !emailVal) {
+        alert('Username and email are required.');
+        return;
+      }
+
+      usernameEl.textContent = usernameVal;
+      emailEl.textContent = emailVal;
+      bioDisplay.textContent = bioVal;
+
+      localStorage.setItem('profileUsername', usernameVal);
+      localStorage.setItem('profileEmail', emailVal);
+      localStorage.setItem('profileBio', bioVal);
+
+      checkAdminAccess(emailVal);
+    });
+
+    // 3D effect for profile panel
+    profilePanel.addEventListener('mousemove', e => {
+      const rect = profilePanel.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      const rotateX = ((y - centerY) / centerY) * 18;
+      const rotateY = ((x - centerX) / centerX) * 18;
+
+      profilePanel.style.transform = `perspective(800px) rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+
+    profilePanel.addEventListener('mouseleave', () => {
+      profilePanel.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg)';
+    });
+
+    profilePanel.addEventListener('mousedown', () => {
+      profilePanel.style.transform += ' scale(0.97)';
+    });
+
+    profilePanel.addEventListener('mouseup', () => {
+      profilePanel.style.transform = profilePanel.style.transform.replace(' scale(0.97)', '');
+    });
+
+    profilePanel.addEventListener('mouseout', () => {
+      profilePanel.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg)';
+    });
+
+    // Admin panel logic
+    function checkAdminAccess(email) {
+      if (email.toLowerCase() === 'duckey5656@gmail.com') {
+        showAdminPanel();
+      } else {
+        hideAdminPanel();
+      }
+    }
+
+    function showAdminPanel() {
+      adminPanel.style.display = 'flex';
+      overlay.style.display = 'block';
+      // Start position in center
+      if (!adminPanel.style.left) {
+        adminPanel.style.top = '50%';
+        adminPanel.style.left = '50%';
+        adminPanel.style.transform = 'translate(-50%, -50%)';
+      }
+    }
+
+    function hideAdminPanel() {
+      adminPanel.style.display = 'none';
+      overlay.style.display = 'none';
+    }
+
+    closeAdminBtn.addEventListener('click', () => {
+      hideAdminPanel();
+    });
+
+    overlay.addEventListener('click', () => {
+      hideAdminPanel();
+    });
+
+    addCommentBtn.addEventListener('click', () => {
+      const commentText = adminCommentInput.value.trim();
+      if (!commentText) return alert('Please write a comment.');
+
+      addCommentToList(commentText);
+
+      // Save comments to localStorage
+      const savedComments = JSON.parse(localStorage.getItem('adminComments') || '[]');
+      savedComments.push(commentText);
+      localStorage.setItem('adminComments', JSON.stringify(savedComments));
+
+      adminCommentInput.value = '';
+    });
+
+    function addCommentToList(comment) {
+      const p = document.createElement('p');
+      p.textContent = comment;
+      commentsDiv.appendChild(p);
+      commentsDiv.scrollTop = commentsDiv.scrollHeight;
+    }
+
+    // Maintenance toggle logic
+    maintenanceToggle.addEventListener('change', () => {
+      toggleMaintenance(maintenanceToggle.checked);
+      localStorage.setItem('maintenanceMode', maintenanceToggle.checked);
+    });
+
+    function toggleMaintenance(isOn) {
+      if (isOn) {
+        maintenanceOverlay.style.display = 'flex';
+        // Optionally disable interactions with underlying page:
+        document.body.style.pointerEvents = 'none';
+        adminPanel.style.pointerEvents = 'auto'; // enable admin panel
+        overlay.style.pointerEvents = 'auto';
+      } else {
+        maintenanceOverlay.style.display = 'none';
+        document.body.style.pointerEvents = 'auto';
+      }
+    }
+
+    // Make admin panel draggable by header
+    let isDragging = false;
+    let dragOffsetX = 0;
+    let dragOffsetY = 0;
+
+    adminHeader.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      const rect = adminPanel.getBoundingClientRect();
+      dragOffsetX = e.clientX - rect.left;
+      dragOffsetY = e.clientY - rect.top;
+      adminPanel.style.transition = 'none'; // disable transition while dragging
+      e.preventDefault();
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      let newLeft = e.clientX - dragOffsetX;
+      let newTop = e.clientY - dragOffsetY;
+
+      // Keep within viewport
+      const maxLeft = window.innerWidth - adminPanel.offsetWidth;
+      const maxTop = window.innerHeight - adminPanel.offsetHeight;
+
+      if (newLeft < 0) newLeft = 0;
+      if (newTop < 0) newTop = 0;
+      if (newLeft > maxLeft) newLeft = maxLeft;
+      if (newTop > maxTop) newTop = maxTop;
+
+      adminPanel.style.left = newLeft + 'px';
+      adminPanel.style.top = newTop + 'px';
+      adminPanel.style.transform = ''; // remove translate while dragging
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (isDragging) {
+        isDragging = false;
+        adminPanel.style.transition = ''; // re-enable transition
+      }
+    });
+  </script>
+</body>
+</html>

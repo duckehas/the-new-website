@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Purchase Tool - Solar Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #0e0e15;
+      color: white;
+      margin: 0;
+      padding: 40px 20px;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .tilt-card {
+      background: #181824;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 0 20px rgba(124, 104, 255, 0.15);
+      transition: transform 0.15s ease, box-shadow 0.3s ease;
+      transform-style: preserve-3d;
+      perspective: 800px;
+      will-change: transform;
+    }
+
+    .tilt-card:hover {
+      box-shadow: 0 0 50px rgba(124, 104, 255, 0.7);
+    }
+
+    .product-card img {
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .product-card h2 {
+      color: #a78bfa;
+      font-size: 1.6rem;
+      margin-bottom: 10px;
+    }
+
+    .features {
+      margin-top: 20px;
+      padding-left: 20px;
+    }
+
+    .features li {
+      margin-bottom: 10px;
+      color: #d1d1e9;
+    }
+
+    .purchase-box h3 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: #c4b5fd;
+    }
+
+    .price {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #a78bfa;
+      margin: 10px 0 30px;
+    }
+
+    .payment-options {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .payment-options a {
+      display: block;
+      text-align: center;
+      padding: 12px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: 0 0 15px rgba(124, 104, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .stripe { background: #635bff; color: white; }
+    .cashapp { background: #00d632; color: white; }
+    .giftcard { background: #ffb300; color: #1c1c1c; }
+    .paypal { background: #0070ba; color: white; }
+
+    .payment-options a:hover {
+      box-shadow: 0 0 25px rgba(124, 104, 255, 0.5);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Product Section -->
+    <div class="product-card tilt-card">
+      <img src="https://cdn.discordapp.com/attachments/1379950756886478909/1382217487181156372/image.png?ex=68616c19&is=68601a99&hm=ec832a04635b62822629ae7637a2d346aaa9233ccf34d93101f8ff2e20ad12b3&" alt="Product Image" />
+      <h2>Engine6.0 Cs2 Exesternal</h2>
+      <ul class="features">
+        <li>⚡Aimbot
+- Fov
+- Aim Bone
+- Smoothing
+- Custom key
+Visuals
+- Box esp
+- Health esp
+- Distance esp
+- Bone esp
+- Head Circle
+- Rainbow color esp
+Triggerbot
+- Custom key
+- Custom delay</li>
+    </div>
+
+    <!-- Purchase Section -->
+    <div class="tilt-card purchase-box">
+      <h3>Choose Payment Method</h3>
+      <p class="price">Day key $2.50</p>
+    <p class="price">Weak key $5.00</p>
+    <p class="price">Month Key $10.00</p>
+    <p class="price">Lifetime Key $35.00</p>
+      <div class="payment-options">
+        <a href="https://buy.stripe.com/your-stripe-link" class="stripe">Pay with Card (Stripe)(Comming soon)</a>
+        <a href="https://cash.app/$johnyukhh" class="cashapp">Pay with Cash App</a>
+        <a href="mailto:Duckey5656@gmail.com?subject=Gift%20Card%20Payment" class="giftcard">Pay with Gift Card</a>
+        <a href="https://www.paypal.me/yourpaypal" class="paypal">Pay with PayPal(Comming soon)</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.tilt-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateX = ((y - centerY) / centerY) * 18;
+        const rotateY = ((x - centerX) / centerX) * 18;
+
+        card.style.transform = `perspective(800px) rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg)';
+      });
+
+      card.addEventListener('mousedown', () => {
+        card.style.transform += ' scale(0.97)';
+      });
+
+      card.addEventListener('mouseup', () => {
+        card.style.transform = card.style.transform.replace(' scale(0.97)', '');
+      });
+
+      card.addEventListener('mouseout', () => {
+        card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg)';
+      });
+    });
+  </script>
+
+</body>
+</html>

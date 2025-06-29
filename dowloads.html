@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />a
+  <title>Downloads - Engine6.0 Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      transform-style: preserve-3d;
+      perspective: 1000px;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #0e0e15;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background-color: #0a0a12;
+      position: fixed;
+      width: 100%;
+      z-index: 1000;
+    }
+    nav a {
+      color: #b4aaff;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: 500;
+      transition: color 0.3s;
+      user-select: none;
+    }
+    nav a:hover {
+      color: #ffffff;
+    }
+    nav .logo {
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: #a78bfa;
+      user-select: none;
+    }
+    main {
+      flex: 1;
+      padding: 100px 20px 40px;
+      max-width: 900px;
+      margin: auto;
+    }
+    h1 {
+      color: #a78bfa;
+      font-weight: 800;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    p.description {
+      color: #cfcfff;
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 1.1em;
+    }
+    .download-list {
+      display: grid;
+      gap: 20px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .download-item {
+      background: #181824;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(124, 104, 255, 0.15);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: box-shadow 0.3s ease;
+    }
+    .download-item:hover {
+      box-shadow: 0 0 30px rgba(124, 104, 255, 0.6);
+    }
+    .download-item h3 {
+      margin: 0;
+      color: #a78bfa;
+      font-weight: 600;
+      font-size: 1.2em;
+    }
+    .download-item p {
+      color: #d1d1e9;
+      font-size: 0.95em;
+      margin: 5px 0 0 0;
+      flex: 1;
+      padding-left: 15px;
+    }
+    .btn-download {
+      padding: 10px 20px;
+      background: #7b61ff;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: 0 0 15px #7b61ff;
+      transition: box-shadow 0.3s ease;
+      user-select: none;
+      white-space: nowrap;
+    }
+    .btn-download:hover {
+      box-shadow: 0 0 30px #7b61ffcc;
+    }
+    footer {
+      text-align: center;
+      padding: 30px;
+      background: #0a0a12;
+      color: #aaaaff;
+      font-size: 0.9em;
+      margin-top: 60px;
+      user-select: none;
+    }
+    @media (max-width: 600px) {
+      main {
+        padding: 80px 15px 40px;
+      }
+      .download-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .download-item p {
+        padding-left: 0;
+        margin-top: 8px;
+      }
+      .btn-download {
+        margin-top: 12px;
+        width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="logo">Engine6.0 Services</div>
+    <div>
+      <a href="Untitled-11.html">Home</a>
+      <a href="downloads.html">Downloads</a>
+      <a href="index.html#products">Products</a>
+      <a href="support.html">Support</a>
+      <a href="faq.html">FAQ</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <main>
+    <h1>Downloads</h1>
+    <p class="description">Get the latest versions of our powerful gaming tools and enhancements. Click below to download the installers.</p>
+
+    <div class="download-list">
+      <div class="download-item">
+        <div>
+          <h3>Engine6.0 Free Roblox Executor</h3>
+          <p>Comming soon still working on the ui</p>
+        </div>
+        <a href="downloads/performance-tweaker.exe" class="btn-download" download>Download</a>
+      </div>
+
+      <div class="download-item">
+        <div>
+          <h3>Engine6.0 Free Cs2 Exesternal</h3>
+          <p>has verey clean esp and water mark and stuff</p>
+        </div>
+        <a href="https://cdn.discordapp.com/attachments/1335429114353418305/1383013728647249990/CFramework.exe?ex=68605d28&is=685f0ba8&hm=c5a231388eeabcd8718b7d9af0541623406a7fc0de608f4e17c5ad45d92bbb5e&" class="btn-download" download>Download</a>
+      </div>
+
+      <div class="download-item">
+        <div>
+          <h3>Engine6.0 Free Roblox Api</h3>
+          <p>comming soon still working on some fuctions</p>
+        </div>
+        <a href="downloads/network-optimizer.exe" class="btn-download" download>Download</a>
+      </div>
+
+      <div class="download-item">
+        <div>
+          <h3>Engine6.0 Free Roblox Script</h3>
+          <p>Has a bunhc of stuff</p>
+        </div>
+        <a href="https://cdn.discordapp.com/attachments/1367238501711614023/1388452437391577099/script.zip?ex=68610899&is=685fb719&hm=fcf5d170776e1b6e24dcf9e07b49f8750059661c483829c30d86af73e0fd11a1&" class="btn-download" download>Download</a>
+      </div>
+
+      <!-- Add more download items as needed -->
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 Engine6.0 Services. All rights reserved.
+  </footer>
+
+</body>
+</html>

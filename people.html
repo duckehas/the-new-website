@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Updates - Solar Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #0e0e15;
+      color: white;
+      padding: 40px 20px;
+      margin: 0;
+    }
+    h1 {
+      text-align: center;
+      color: #a78bfa;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    .update-inputs {
+      max-width: 500px;
+      margin: 0 auto 30px;
+      background: #181824;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(124, 104, 255, 0.2);
+      transition: transform 0.15s ease, box-shadow 0.3s ease;
+      transform-style: preserve-3d;
+      perspective: 800px;
+      will-change: transform;
+    }
+
+    .update-inputs:hover {
+      box-shadow: 0 0 50px rgba(124, 104, 255, 0.7);
+    }
+
+    input, textarea {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background: #26263a;
+      color: white;
+    }
+
+    button {
+      background: #a78bfa;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #8b5cf6;
+    }
+
+    .update-feed {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 30px;
+    }
+
+    .update-card {
+      background: #181824;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(124, 104, 255, 0.15);
+      transition: transform 0.15s ease, box-shadow 0.3s ease;
+      transform-style: preserve-3d;
+      perspective: 800px;
+      will-change: transform;
+    }
+
+    .update-card:hover {
+      box-shadow: 0 0 50px rgba(124, 104, 255, 0.7);
+    }
+
+    .update-text {
+      font-size: 1rem;
+      line-height: 1.5;
+      color: white;
+    }
+
+    .update-time {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      color: #bbb;
+    }
+
+    .home-link {
+      display: block;
+      text-align: center;
+      margin-top: 40px;
+      color: #a78bfa;
+      font-weight: bold;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Post an Update</h1>
+
+  <div class="update-inputs" id="updateInputBox">
+    <input type="text" id="keyInput" placeholder="Enter Update Key" />
+    <textarea id="updateText" rows="4" placeholder="What's new?"></textarea>
+    <button onclick="postUpdate()">Post Update</button>
+  </div>
+
+  <h1 style="margin-top: 50px;">Updates Feed</h1>
+  <div class="update-feed" id="updateFeed"></div>
+
+  <a href="Untitled-11.html" class="home-link">← Back Home</a>
+
+  <script>
+    const accessKey = "solar-admin-456";
+
+    function loadUpdates() {
+      const feed = document.getElementById("updateFeed");
+      feed.innerHTML = "";
+      const updates = JSON.parse(localStorage.getItem("updates")) || [];
+
+      updates.forEach(update => {
+        const card = document.createElement("div");
+        card.className = "update-card";
+
+        card.innerHTML = `
+          <div class="update-text">${update.text}</div>
+          <div class="update-time">${update.time}</div>
+        `;
+
+        feed.appendChild(card);
+
+        // 3D tilt effect on each update card
+        card.addEventListener('mousemove', e => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          const rotateX = ((y - centerY) / centerY) * 18;
+          const rotateY = ((x - centerX) / centerX) * 18;
+          card.style.transform = `perspective(800px) rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg)';
+        });
+        card.addEventListener('mousedown', () => {
+          card.style.transform += ' scale(0.97)';
+        });
+        card.addEventListener('mouseup', () => {
+          card.style.transform = card.style.transform.replace(' scale(0.97)', '');
+        });
+      });
+    }
+
+    function postUpdate() {
+      const key = document.getElementById("keyInput").value.trim();
+      const text = document.getElementById("updateText").value.trim();
+      if (key !== accessKey) {
+        alert("Invalid key.");
+        return;
+      }
+      if (!text) {
+        alert("Update text is empty.");
+        return;
+      }
+
+      const time = new Date().toLocaleString();
+      const updates = JSON.parse(localStorage.getItem("updates")) || [];
+      updates.unshift({ text, time });
+      localStorage.setItem("updates", JSON.stringify(updates));
+      document.getElementById("updateText").value = "";
+      loadUpdates();
+    }
+
+    loadUpdates();
+
+    // Add 3D effect to update input panel
+    const inputPanel = document.getElementById("updateInputBox");
+
+    inputPanel.addEventListener('mousemove', e => {
+      const rect = inputPanel.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      const rotateX = ((y - centerY) / centerY) * 18;
+      const rotateY = ((x - centerX) / centerX) * 18;
+
+      inputPanel.style.transform = `perspective(800px) rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+
+    inputPanel.addEventListener('mouseleave', () => {
+      inputPanel.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg)';
+    });
+
+    inputPanel.addEventListener('mousedown', () => {
+      inputPanel.style.transform += ' scale(0.97)';
+    });
+
+    inputPanel.addEventListener('mouseup', () => {
+      inputPanel.style.transform = inputPanel.style.transform.replace(' scale(0.97)', '');
+    });
+  </script>
+</body>
+</html>

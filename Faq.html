@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FAQ - Engine6.0 Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      transform-style: preserve-3d;
+      perspective: 1000px;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #0e0e15;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background-color: #0a0a12;
+      position: fixed;
+      width: 100%;
+      z-index: 1000;
+    }
+    nav a {
+      color: #b4aaff;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: 500;
+      transition: color 0.3s;
+      user-select: none;
+    }
+    nav a:hover {
+      color: #ffffff;
+    }
+    nav .logo {
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: #a78bfa;
+      user-select: none;
+    }
+    main {
+      flex: 1;
+      padding: 100px 20px 40px;
+      max-width: 900px;
+      margin: auto;
+    }
+    h1 {
+      color: #a78bfa;
+      font-weight: 800;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    .faq-item {
+      background: #181824;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 15px rgba(124, 104, 255, 0.15);
+      cursor: pointer;
+      transition: box-shadow 0.3s ease;
+      user-select: none;
+    }
+    .faq-item:hover {
+      box-shadow: 0 0 30px rgba(124, 104, 255, 0.6);
+    }
+    .faq-question {
+      font-weight: 600;
+      color: #a78bfa;
+      font-size: 1.2em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .faq-answer {
+      margin-top: 15px;
+      color: #d1d1e9;
+      font-size: 1em;
+      line-height: 1.4;
+      display: none;
+    }
+    .faq-item.active .faq-answer {
+      display: block;
+    }
+    .faq-item .toggle-icon {
+      font-weight: 800;
+      font-size: 1.5em;
+      transition: transform 0.3s ease;
+      user-select: none;
+    }
+    .faq-item.active .toggle-icon {
+      transform: rotate(45deg);
+    }
+    footer {
+      text-align: center;
+      padding: 30px;
+      background: #0a0a12;
+      color: #aaaaff;
+      font-size: 0.9em;
+      margin-top: 60px;
+      user-select: none;
+    }
+    @media (max-width: 600px) {
+      main {
+        padding: 80px 15px 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="logo">Engine6.0 Services</div>
+    <div>
+      <a href="Untitled-11.html">Home</a>
+      <a href="downloads.html">Downloads</a>
+      <a href="index.html#products">Products</a>
+      <a href="support.html">Support</a>
+      <a href="faq.html">FAQ</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <main>
+    <h1>Frequently Asked Questions</h1>
+
+    <div class="faq-item" tabindex="0">
+      <div class="faq-question">
+        Why am i still Getting banned when im not rage cheating
+        <span class="toggle-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        Well the truth is cheats can still get you banned becuase the change stuff about the server and its will notice that you are doing that
+      </div>
+    </div>
+
+    <div class="faq-item" tabindex="0">
+      <div class="faq-question">
+        is the cod Unlock all perm
+        <span class="toggle-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        yes it is wiht our unlock tool you will never have to worry about toggleing it over and over one time and evreything is unlocked for good
+      </div>
+    </div>
+
+    <div class="faq-item" tabindex="0">
+      <div class="faq-question">
+        Can I use these tools on multiple devices?
+        <span class="toggle-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        No Our porducts are Hwid set so you can not give them to yout freinds to use and sell them to other people
+      </div>
+    </div>
+
+    <div class="faq-item" tabindex="0">
+      <div class="faq-question">
+        What should I do if I encounter bugs or crashes?
+        <span class="toggle-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        Please contact our Support team via the Support page. Provide detailed information about the issue, your system specs, and any error messages.
+      </div>
+    </div>
+
+    <div class="faq-item" tabindex="0">
+      <div class="faq-question">
+        Are these tools safe and cheat-free?
+        <span class="toggle-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        Absolutely. Our tools are designed to by pass evreything we are one of the most undected Cheat Devs on the market Right now.
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    &copy; 2025 Engine6.0 Services. All rights reserved.
+  </footer>
+
+  <script>
+    // FAQ toggle logic
+    const faqItems = document.querySelectorAll('.faq-item');
+
+    faqItems.forEach(item => {
+      item.addEventListener('click', () => {
+        item.classList.toggle('active');
+      });
+
+      item.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          item.classList.toggle('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

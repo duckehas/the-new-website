@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Product Status - Solar Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #0e0e15;
+      color: white;
+      margin: 0;
+      padding: 40px 20px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    h1 {
+      color: #a78bfa;
+      text-align: center;
+      margin-bottom: 40px;
+      font-weight: 800;
+      font-size: 2.5rem;
+    }
+
+    .status-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .status-item {
+      background: #181824;
+      border-radius: 14px;
+      padding: 20px 25px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 0 15px rgba(124, 104, 255, 0.15);
+      transition: box-shadow 0.3s ease;
+    }
+    .status-item:hover {
+      box-shadow: 0 0 40px rgba(124, 104, 255, 0.4);
+    }
+
+    .status-name {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #c4b5fd;
+    }
+
+    .status-indicator {
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      min-width: 110px;
+      text-align: center;
+    }
+
+    /* Status colors */
+    .status-online {
+      background-color: #16a34a;
+      color: white;
+      box-shadow: 0 0 10px #16a34a;
+    }
+
+    .status-maintenance {
+      background-color: #facc15;
+      color: #1c1917;
+      box-shadow: 0 0 10px #facc15;
+    }
+
+    .status-offline {
+      background-color: #dc2626;
+      color: white;
+      box-shadow: 0 0 10px #dc2626;
+    }
+
+    .status-unknown {
+      background-color: #6b7280;
+      color: white;
+      box-shadow: 0 0 10px #6b7280;
+    }
+
+    .back-button {
+      display: block;
+      width: 140px;
+      margin: 40px auto 0 auto;
+      padding: 12px 0;
+      text-align: center;
+      background-color: #635bff;
+      color: white;
+      font-weight: 700;
+      border-radius: 12px;
+      text-decoration: none;
+      box-shadow: 0 0 20px rgba(99, 91, 255, 0.5);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .back-button:hover {
+      background-color: #4a44d4;
+      box-shadow: 0 0 30px rgba(74, 68, 212, 0.8);
+    }
+  </style>
+</head>
+<body>
+  <h1>Product Status</h1>
+  <ul class="status-list">
+    <li class="status-item">
+      <span class="status-name">Engine6.0 Roblox Executor</span>
+      <span class="status-indicator status-online">online</span>
+    </li>
+    <li class="status-item">
+      <span class="status-name">Cod/warzopne internal</span>
+      <span class="status-indicator status-online">online</span>
+    </li>
+    <li class="status-item">
+      <span class="status-name">Cod/warzopne Exesternal</span>
+      <span class="status-indicator status-online">online</span>
+    </li>
+    <li class="status-item">
+      <span class="status-name">Cod/warzopne Tweaker</span>
+      <span class="status-indicator status-online">online</span>
+    </li>
+    <li class="status-item">
+      <span class="status-name">Roblox Executor Paid</span>
+      <span class="status-indicator status-online">online</span>
+    </li>
+      <li class="status-item">
+      <span class="status-name">Roblox Executor Free</span>
+      <span class="status-indicator status-offline">Offline</span>
+    </li>
+
+          <li class="status-item">
+      <span class="status-name">Engine6.0 Temp Spoofer</span>
+      <span class="status-indicator status-online">online</span>
+    </li>
+
+          <li class="status-item">
+      <span class="status-name">Engine6.0 Untrned Internal</span>
+      <span class="status-indicator status-online">online</span>
+    </li>
+
+          <li class="status-item">
+      <span class="status-name">Engine6.0 Monco</span>
+      <span class="status-indicator status-online">online</span>
+    </li>
+          <li class="status-item">
+      <span class="status-name">Engine6.0 Roblox APi</span>
+      <span class="status-indicator status-offline">Offline</span>
+    </li>
+          <li class="status-item">
+      <span class="status-name">Engine6.0 Steam Warzone Ready Accounts</span>
+      <span class="status-indicator status-online">online</span>
+    </li>
+              <li class="status-item">
+      <span class="status-name">Engine6.0 Roblox Account Genrator</span>
+      <span class="status-indicator status-online">online</span>
+    </li>
+              <li class="status-item">
+      <span class="status-name">Engine6.0 Fornight Exesternal</span>
+      <span class="status-indicator status-offline">Offline</span>
+    </li>
+              <li class="status-item">
+      <span class="status-name">Engine6.0 Rebrands</span>
+      <span class="status-indicator status-online">online</span>
+    </li>
+              <li class="status-item">
+      <span class="status-name">Engine6.0 Perm Spoofer</span>
+      <span class="status-indicator status-online">online</span>
+    </li>
+              <li class="status-item">
+      <span class="status-name">Engine6.0 Temp Spoofer</span>
+      <span class="status-indicator status-online">online</span>
+    </li>
+  </ul>
+
+  <a href="Untitled-11.html" class="back-button">Back Home</a>
+</body>
+</html>

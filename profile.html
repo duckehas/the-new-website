@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Uploads - Solar Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #0e0e15;
+      color: white;
+      margin: 0;
+      padding: 40px 20px 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      color: #a78bfa;
+      margin-bottom: 30px;
+    }
+    .upload-panel {
+      background: #181824;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 0 30px rgba(124, 104, 255, 0.15);
+      max-width: 600px;
+      width: 100%;
+      transition: transform 0.3s ease;
+    }
+    form {
+      margin-bottom: 20px;
+    }
+    textarea, input[type="file"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 10px;
+      background: #26263a;
+      color: white;
+    }
+    button, .delete-btn {
+      background: #a78bfa;
+      color: #0e0e15;
+      font-weight: 700;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 10px;
+    }
+    button:hover, .delete-btn:hover {
+      background: #8a67e3;
+    }
+    .upload-item {
+      background: #181824;
+      border-radius: 16px;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: flex-start;
+      box-shadow: 0 0 20px rgba(124, 104, 255, 0.2);
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+      perspective: 800px;
+      will-change: transform;
+    }
+    .upload-profile-pic img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      margin-right: 15px;
+      object-fit: cover;
+      box-shadow: 0 0 6px #a78bfa;
+    }
+    .upload-content {
+      flex: 1;
+    }
+    .upload-username {
+      font-weight: bold;
+      color: #c4b5fd;
+    }
+    .upload-message {
+      margin-top: 6px;
+      white-space: pre-wrap;
+    }
+    .upload-file {
+      margin-top: 10px;
+      max-width: 200px;
+      max-height: 200px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(124, 104, 255, 0.4);
+    }
+    .home-btn {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #a78bfa;
+      padding: 12px 28px;
+      border: none;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #0e0e15;
+      box-shadow: 0 4px 14px rgba(167,139,250,0.6);
+      cursor: pointer;
+    }
+    .delete-btn {
+      margin-top: 10px;
+      background-color: #ff4d4d;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Uploads</h1>
+
+  <div class="upload-panel" id="uploadPanel">
+    <form id="uploadForm">
+      <textarea id="message" placeholder="Write your message here..."></textarea>
+      <input type="file" id="fileInput" accept="image/*,.pdf,.doc,.docx,.txt" />
+      <button type="submit">Send Upload</button>
+    </form>
+
+    <div id="uploadsList"></div>
+  </div>
+
+  <button class="home-btn" onclick="window.location.href='Untitled-11.html'">Back Home</button>
+
+  <script>
+    const form = document.getElementById('uploadForm');
+    const uploadsList = document.getElementById('uploadsList');
+    const username = localStorage.getItem('profileUsername') || 'Anonymous';
+    const profilePic = localStorage.getItem('profilePic') || 'https://via.placeholder.com/150';
+    const EXPIRY_MS = 2 * 24 * 60 * 60 * 1000; // 2 days
+    let uploads = JSON.parse(localStorage.getItem('uploads') || '[]');
+
+    function saveUploads() {
+      localStorage.setItem('uploads', JSON.stringify(uploads));
+    }
+
+    function createUploadElement(upload, index) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'upload-item';
+
+      const profile = document.createElement('div');
+      profile.className = 'upload-profile-pic';
+      const img = document.createElement('img');
+      img.src = upload.profilePic;
+      profile.appendChild(img);
+
+      const content = document.createElement('div');
+      content.className = 'upload-content';
+
+      const uname = document.createElement('div');
+      uname.className = 'upload-username';
+      uname.textContent = upload.username;
+
+      const msg = document.createElement('div');
+      msg.className = 'upload-message';
+      msg.textContent = upload.message;
+
+      content.appendChild(uname);
+      content.appendChild(msg);
+
+      if (upload.fileDataUrl) {
+        const ext = upload.fileName.split('.').pop().toLowerCase();
+        let fileEl;
+        if (['png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp'].includes(ext)) {
+          fileEl = document.createElement('img');
+          fileEl.className = 'upload-file';
+          fileEl.src = upload.fileDataUrl;
+          fileEl.alt = upload.fileName;
+        } else {
+          fileEl = document.createElement('a');
+          fileEl.href = upload.fileDataUrl;
+          fileEl.textContent = `Download ${upload.fileName}`;
+          fileEl.target = '_blank';
+          fileEl.style.color = '#a78bfa';
+          fileEl.style.display = 'block';
+          fileEl.style.marginTop = '8px';
+        }
+        content.appendChild(fileEl);
+      }
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.textContent = 'Delete Upload';
+      deleteBtn.className = 'delete-btn';
+      deleteBtn.onclick = () => {
+        uploads.splice(index, 1);
+        saveUploads();
+        renderUploads();
+      };
+      content.appendChild(deleteBtn);
+
+      wrapper.appendChild(profile);
+      wrapper.appendChild(content);
+
+      // 3D tilt effect
+      wrapper.addEventListener('mousemove', e => {
+        const rect = wrapper.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * 15;
+        const rotateY = ((x - centerX) / centerX) * 15;
+        wrapper.style.transform = `perspective(800px) rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
+      });
+      wrapper.addEventListener('mouseleave', () => {
+        wrapper.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg)';
+      });
+
+      return wrapper;
+    }
+
+    function renderUploads() {
+      const now = Date.now();
+      uploads = uploads.filter(u => now - u.timestamp < EXPIRY_MS);
+      saveUploads();
+      uploadsList.innerHTML = '';
+      uploads.forEach((upload, index) => {
+        const el = createUploadElement(upload, index);
+        uploadsList.appendChild(el);
+      });
+    }
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const message = document.getElementById('message').value.trim();
+      const file = document.getElementById('fileInput').files[0];
+
+      if (!message && !file) {
+        alert('Enter a message or select a file.');
+        return;
+      }
+
+      const timestamp = Date.now();
+
+      const addUpload = (fileDataUrl = null, fileName = '') => {
+        uploads.push({ username, profilePic, message, fileDataUrl, fileName, timestamp });
+        saveUploads();
+        renderUploads();
+        form.reset();
+      };
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = e => addUpload(e.target.result, file.name);
+        reader.readAsDataURL(file);
+      } else {
+        addUpload();
+      }
+    });
+
+    renderUploads();
+  </script>
+</body>
+</html>

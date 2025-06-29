@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Announcements</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #0e0e15;
+      color: white;
+      margin: 0;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #a78bfa;
+      font-size: 2.5rem;
+      margin-bottom: 40px;
+    }
+
+    .announcement-form {
+      background: #181824;
+      border-radius: 16px;
+      padding: 25px;
+      max-width: 600px;
+      margin: 0 auto 40px;
+      box-shadow: 0 0 20px rgba(124, 104, 255, 0.15);
+      transition: transform 0.15s ease, box-shadow 0.3s ease;
+      transform-style: preserve-3d;
+      perspective: 800px;
+      will-change: transform;
+      cursor: pointer;
+    }
+
+    .announcement-form:hover {
+      box-shadow: 0 0 50px rgba(124, 104, 255, 0.7);
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 8px;
+      color: #c4b5fd;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 10px 15px;
+      border-radius: 12px;
+      border: 1px solid #444;
+      background: #26263a;
+      color: white;
+      font-size: 1rem;
+      resize: vertical;
+      margin-bottom: 20px;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    button {
+      background-color: #a78bfa;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 12px;
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #8b73e6;
+    }
+
+    .announcement-feed {
+      max-width: 600px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .announcement-card {
+      background: #181824;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 0 20px rgba(124, 104, 255, 0.15);
+      transition: transform 0.15s ease, box-shadow 0.3s ease;
+      transform-style: preserve-3d;
+      perspective: 800px;
+      will-change: transform;
+      cursor: pointer;
+    }
+
+    .announcement-card:hover {
+      box-shadow: 0 0 50px rgba(124, 104, 255, 0.7);
+    }
+
+    .announcement-date {
+      font-size: 0.85rem;
+      color: #aaa;
+      margin-top: 12px;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Announcements</h1>
+
+  <div class="announcement-form">
+    <label for="adminKey">Admin Key</label>
+    <input type="text" id="adminKey" placeholder="Enter admin key" />
+
+    <label for="announcementInput">Write Announcement</label>
+    <textarea id="announcementInput" rows="4" placeholder="Type your announcement here..."></textarea>
+
+    <button id="postAnnouncement">Post Announcement</button>
+  </div>
+
+  <div class="announcement-feed" id="announcementFeed"></div>
+
+  <script>
+    // 3D tilt effect for announcement cards
+    function add3DTiltEffect(card) {
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * 18;
+        const rotateY = ((x - centerX) / centerX) * 18;
+        card.style.transform = `perspective(800px) rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg)';
+      });
+
+      card.addEventListener('mousedown', () => {
+        card.style.transform += ' scale(0.97)';
+      });
+
+      card.addEventListener('mouseup', () => {
+        card.style.transform = card.style.transform.replace(' scale(0.97)', '');
+      });
+    }
+
+    // Add 3D tilt effect to announcement form
+    const form = document.querySelector('.announcement-form');
+
+    form.addEventListener('mousemove', e => {
+      const rect = form.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = ((y - centerY) / centerY) * 18;
+      const rotateY = ((x - centerX) / centerX) * 18;
+      form.style.transform = `perspective(800px) rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+
+    form.addEventListener('mouseleave', () => {
+      form.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg)';
+    });
+
+    form.addEventListener('mousedown', () => {
+      form.style.transform += ' scale(0.97)';
+    });
+
+    form.addEventListener('mouseup', () => {
+      form.style.transform = form.style.transform.replace(' scale(0.97)', '');
+    });
+
+    // Announcements handling
+    const adminKeyInput = document.getElementById('adminKey');
+    const announcementInput = document.getElementById('announcementInput');
+    const postBtn = document.getElementById('postAnnouncement');
+    const feed = document.getElementById('announcementFeed');
+
+    const ADMIN_KEY = 'mysecretkey123';  // Replace with your real admin key
+
+    // Load announcements from localStorage
+    let announcements = JSON.parse(localStorage.getItem('announcements')) || [];
+
+    function renderAnnouncements() {
+      feed.innerHTML = '';
+      announcements.forEach(({ text, datetime }) => {
+        const card = document.createElement('div');
+        card.className = 'announcement-card';
+
+        const announcementText = document.createElement('div');
+        announcementText.textContent = text;
+
+        const announcementDate = document.createElement('div');
+        announcementDate.className = 'announcement-date';
+
+        const dateObj = new Date(datetime);
+        announcementDate.textContent = isNaN(dateObj) ? 'Invalid Date' : dateObj.toLocaleString();
+
+        card.appendChild(announcementText);
+        card.appendChild(announcementDate);
+        feed.appendChild(card);
+
+        add3DTiltEffect(card);
+      });
+    }
+
+    postBtn.addEventListener('click', () => {
+      if (adminKeyInput.value !== ADMIN_KEY) {
+        alert('Invalid admin key!');
+        return;
+      }
+
+      const text = announcementInput.value.trim();
+      if (!text) {
+        alert('Please enter an announcement.');
+        return;
+      }
+
+      const newAnnouncement = {
+        text,
+        datetime: new Date().toISOString()
+      };
+
+      announcements.unshift(newAnnouncement);
+      localStorage.setItem('announcements', JSON.stringify(announcements));
+
+      announcementInput.value = '';
+      renderAnnouncements();
+    });
+
+    renderAnnouncements();
+  </script>
+</body>
+</html>

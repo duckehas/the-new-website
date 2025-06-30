@@ -17,6 +17,19 @@
       font-family: 'Poppins', sans-serif;
       background-color: #0e0e15;
       color: white;
+      position: relative;
+      overflow-x: hidden;
+    }
+    /* Canvas for particles */
+    #particle-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      background: transparent;
+      display: block;
     }
     nav {
       display: flex;
@@ -56,6 +69,7 @@
       padding: 0 20px;
       position: relative;
       overflow: hidden;
+      z-index: 1;
     }
     header::before {
       content: '';
@@ -115,6 +129,8 @@
       color: #d1d1e9;
       display: block; /* for cards links */
       text-decoration: none;
+      z-index: 2;
+      position: relative;
     }
     .tilt:hover {
       box-shadow: 0 0 30px rgba(124, 104, 255, 0.6);
@@ -135,6 +151,8 @@
       box-shadow: 0 0 15px #7b61ff;
       transition: box-shadow 0.3s ease;
       user-select: none;
+      z-index: 2;
+      position: relative;
     }
     .btn:hover {
       box-shadow: 0 0 30px #7b61ffcc;
@@ -143,6 +161,8 @@
       padding: 80px 20px;
       max-width: 1200px;
       margin: auto;
+      position: relative;
+      z-index: 2;
     }
     .section h2 {
       text-align: center;
@@ -163,6 +183,8 @@
       font-size: 0.9em;
       margin-top: 60px;
       user-select: none;
+      position: relative;
+      z-index: 2;
     }
     @media (max-width: 768px) {
       header h1 {
@@ -177,6 +199,9 @@
 </head>
 <body>
 
+  <!-- Particle Canvas -->
+  <canvas id="particle-canvas"></canvas>
+
   <!-- Navigation -->
   <nav>
     <div class="logo">Engine6.0 Services</div>
@@ -187,13 +212,13 @@
       <a href="Support.html">Support</a>
       <a href="Faq.html">FAQ</a>
       <a href="Contact.html">Contact</a>
-    <a href="Staus.html">Status</a>
-    <a href="Uploads.html">Profile</a>
-    <a href="profile.html">Uploads</a>
-    <a href="people.html">Updates</a>
-    <a href="tut.html">Tutorial</a>
-    <a href="Anc.html">daily Announcements</a>
-    <a href="Settings.html">Settings</a>
+      <a href="Staus.html">Status</a>
+      <a href="Uploads.html">Profile</a>
+      <a href="profile.html">Uploads</a>
+      <a href="people.html">Updates</a>
+      <a href="tut.html">Tutorial</a>
+      <a href="Anc.html">daily Announcements</a>
+      <a href="Settings.html">Settings</a>
     </div>
   </nav>
 
@@ -201,14 +226,13 @@
   <header id="home">
     <h1>Industry-Leading Cheats</h1>
     <p>Experience next-level gaming enhancements, fully optimized and trusted by thousands.</p>
-    <a href="#products" class="btn tilt">Please open the Contact Tab From the Home page Or a glitch Will happen Also if you dont see every tab when you click on one just go back to the home page  Thank you so much!!</a>
+    <a href="#products" class="btn tilt">Exesplore Now</a>
   </header>
 
   <!-- Products Section -->
   <section class="section" id="products">
     <h2>Our Products</h2>
     <div class="products">
-      <!-- 15 product cards -->
       <a href="buy page.html" class="tilt" tabindex="0">
         <h3>Engine6.0 Roblox Executor</h3>
         <p>Optimize for game performance with precision controls and Has 100% Unc and 100% Sunc(Click to See more Details)</p>
@@ -309,6 +333,86 @@
         el.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0)';
       });
     });
+
+    // Particle background script
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let particles = [];
+    const maxDistance = 150;
+    const particleCount = 70;
+
+    function resize() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+    }
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+        this.radius = 2;
+        this.color = 'rgba(123, 97, 255, 0.8)';
+      }
+      move() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > width) this.vx *= -1;
+        if (this.y < 0 || this.y > height) this.vy *= -1;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.fillStyle = this.color;
+        ctx.shadowColor = this.color;
+        ctx.shadowBlur = 8;
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function connectParticles() {
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          let dx = particles[i].x - particles[j].x;
+          let dy = particles[i].y - particles[j].y;
+          let dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < maxDistance) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(123, 97, 255, ${1 - dist / maxDistance})`;
+            ctx.lineWidth = 1;
+            ctx.shadowColor = 'rgba(123, 97, 255, 0.6)';
+            ctx.shadowBlur = 4;
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+            ctx.closePath();
+          }
+        }
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+      particles.forEach(p => {
+        p.move();
+        p.draw();
+      });
+      connectParticles();
+      requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
+    }
+
+    animate();
   </script>
 </body>
 </html>
